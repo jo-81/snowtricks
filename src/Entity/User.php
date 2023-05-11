@@ -169,12 +169,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setValueWhenPersist(): void
     {
         $this->createdAt = new \DateTimeImmutable();
-        $this->createdAt = new \DateTimeImmutable();
+        $this->editedAt = new \DateTimeImmutable();
     }
 
     #[ORM\PreUpdate]
     public function setValueWhenUpdate(): void
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->editedAt = new \DateTimeImmutable();
     }
 }
