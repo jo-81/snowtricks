@@ -1,0 +1,11 @@
+App\Entity\User:
+  user_1:
+    username: 'admin'
+    email: 'admin@domaine.fr'
+    roles: '[ROLE_ADMIN]'
+    password: \$2y\$10\$Q7lCAYGg1ipk0Yd86bBTwebvm.PaQh5kUyWsNInCjzetXQm9ZXGxC
+
+  user_{2..10}:
+    username: '<username()>'
+    email: '<email()>'
+    password: \$2y\$10\$Q7lCAYGg1ipk0Yd86bBTwebvm.PaQh5kUyWsNInCjzetXQm9ZXGxC

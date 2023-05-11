@@ -1,0 +1,8 @@
+App\Entity\Trick:
+  trick_{1..20}:
+    title (unique): '<sentence()>'
+    slug (unique): '<slug()>'
+    content: '<text()>'
+    author: '@user_<numberBetween(1, 10)>'
+    category: '@category_<numberBetween(1, 10)>'
+    gallery: '<numberBetween(1, 10)>x @image_*'
