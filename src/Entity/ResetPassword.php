@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\BlockedRepository;
+use App\Repository\ResetPasswordRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: BlockedRepository::class)]
+#[ORM\Entity(repositoryClass: ResetPasswordRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Blocked
+class ResetPassword
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -17,8 +17,11 @@ class Blocked
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $expiredAt = null;
+
     #[ORM\Column(length: 255)]
-    private ?string $reason = null;
+    private ?string $token = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -41,14 +44,26 @@ class Blocked
         return $this;
     }
 
-    public function getReason(): ?string
+    public function getExpiredAt(): ?\DateTimeImmutable
     {
-        return $this->reason;
+        return $this->expiredAt;
     }
 
-    public function setReason(string $reason): self
+    public function setExpiredAt(\DateTimeImmutable $expiredAt): self
     {
-        $this->reason = $reason;
+        $this->expiredAt = $expiredAt;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(string $token): self
+    {
+        $this->token = $token;
 
         return $this;
     }
