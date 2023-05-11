@@ -1,0 +1,5 @@
+App\Entity\Comment:
+  comment_{1..100}:
+    content: '<text()>'
+    author: '@user_<numberBetween(1, 10)>'
+    trick: '@trick_<numberBetween(1, 20)>'
