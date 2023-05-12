@@ -6,9 +6,23 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './styles/app.css';
+import './styles/app.scss';
+
+import * as Bootstrap from "bootstrap";
 
 // start the Stimulus application
 import './bootstrap';
 
-import "tw-elements";
+// Navigation
+window.addEventListener('scroll', function(e) {
+    let navigation = document.getElementById("navbar")
+    let top = window.pageYOffset;
+
+    if (top != 0 ) {
+        navigation.classList.remove("bg-opacity-50", "py-4");
+    }
+
+    if (top == 0) {
+        navigation.classList.add("bg-opacity-50", "py-4");
+    }
+})

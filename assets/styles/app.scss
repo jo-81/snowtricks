@@ -1,0 +1,30 @@
+/* COLORS */
+$primary: #0073E6;
+$link-color: #f57600;
+
+/* TYPOGRAPHIE */
+$font-family-base: 'Lato', sans-serif;
+$line-height-base: 1.6;
+$body-color: #4f4f4f;
+$link-decoration: none;
+
+.wrap {
+    max-width: 1440px;
+    margin: auto;
+
+    &.image {
+        height: 700px;
+        background-attachment: fixed;
+        background-position: bottom;
+    }
+}
+
+#navbar {
+    transition: background-color 0.15s, padding 0.15s;
+}
+
+.z-index-5 {
+    z-index: 50;
+}
+
+@import "~bootstrap/scss/bootstrap";
