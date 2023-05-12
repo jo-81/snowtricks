@@ -1,20 +1,26 @@
 <header>
     <nav id="navbar" class="shadow navbar navbar-expand-md position-fixed w-100 top-0 bg-primary bg-opacity-50 z-index-5 py-4">
         <div class="container">
-            <a class="navbar-brand" href="#">SnowTricks</a>
+            <a class="navbar-brand" href="{{ path('homepage') }}">SnowTricks</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#">Figures</a>
+                            <a class="{{ html_classes('nav-link', {
+                                "active": 'tricks' in app.request.requestUri
+                            }) }}" href="{{ path('trick.list') }}">Figures</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Inscription</a>
+                            <a class="{{ html_classes('nav-link', {
+                                "active": 'inscription' in app.request.requestUri
+                            }) }}" href="#">Inscription</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Connexion</a>
+                            <a class="{{ html_classes('nav-link', {
+                                "active": 'connexion' in app.request.requestUri
+                            }) }}" href="#">Connexion</a>
                         </li>
                     </ul>
                 </div>

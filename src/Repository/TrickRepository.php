@@ -38,4 +38,25 @@ class TrickRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    /**
+     * search.
+     *
+     * @return array<mixed>
+     */
+    public function search(string $query = ''): array
+    {
+        if (empty($query)) {
+            return [];
+        }
+
+        /* @phpstan-ignore-next-line */
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.title LIKE :query')
+            ->setParameter('query', '%'.$query.'%')
+            ->orderBy('t.title', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

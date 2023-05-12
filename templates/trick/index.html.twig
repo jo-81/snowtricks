@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des figures{% endblock %}
+
+{% block body %}
+    <section>
+        <header class="mb-4">
+            <h2 class="mb-0 fw-bold">Liste des figures</h2>
+        </header>
+        {{ component('trick_list_and_search') }}
+    </section>
+{% endblock %}
