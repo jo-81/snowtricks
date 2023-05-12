@@ -1,12 +1,36 @@
 /* COLORS */
-$primary: #0073E6;
-$link-color: #f57600;
+$primary:       #0073E6;
+$link-color:    #f57600;
+$secondary:     grey;
+$success:       green;
+$info:          cyan;
+$warning:       yellow;
+$danger:        red;
+$light:         #d9e4ff;
+$dark:          black;
+
+$theme-colors: (
+    "primary":    $primary,
+    "secondary":  $secondary,
+    "success":    $success,
+    "info":       $info,
+    "warning":    $warning,
+    "danger":     $danger,
+    "light":      $light,
+    "dark":       $dark,
+    "action":     $link-color,
+);
 
 /* TYPOGRAPHIE */
 $font-family-base: 'Lato', sans-serif;
 $line-height-base: 1.6;
 $body-color: #4f4f4f;
 $link-decoration: none;
+
+/* BUTTON */
+$btn-border-radius: 0;
+$btn-border-radius-sm: 0;
+$btn-border-width: 3px;
 
 .wrap {
     max-width: 1440px;
@@ -25,6 +49,22 @@ $link-decoration: none;
 
 .z-index-5 {
     z-index: 50;
+}
+
+@media all and (min-width: 320px) {
+    img.scale {
+        transform: skew(-7deg) scale(0.92);
+    }
+}
+
+@media all and (min-width: 768px) {
+    img.scale {
+        transform: skew(-7deg);
+    }
+}
+
+.scale {
+    transform: skew(-7deg);
 }
 
 @import "~bootstrap/scss/bootstrap";

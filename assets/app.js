@@ -14,15 +14,20 @@ import * as Bootstrap from "bootstrap";
 import './bootstrap';
 
 // Navigation
-window.addEventListener('scroll', function(e) {
-    let navigation = document.getElementById("navbar")
+let toggleClassScrollEvent = function() {
+    let navigation = document.getElementById("navbar");
     let top = window.pageYOffset;
 
-    if (top != 0 ) {
+    if (top != 0) {
         navigation.classList.remove("bg-opacity-50", "py-4");
     }
 
     if (top == 0) {
         navigation.classList.add("bg-opacity-50", "py-4");
     }
-})
+}
+
+toggleClassScrollEvent();
+window.addEventListener("scroll", function (e) {
+    toggleClassScrollEvent();
+});

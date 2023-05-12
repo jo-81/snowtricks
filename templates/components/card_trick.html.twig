@@ -1,0 +1,24 @@
+<div{{ attributes.defaults({ class: 'col-12' }) }}>
+
+    <article class="d-md-flex">
+        <div class="col-md-3 flex-shrink-0">
+            <img class="img-fluid scale" src="https://images.unsplash.com/photo-1478700485868-972b69dc3fc4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80">
+        </div>
+
+        <div class="flex-grow-1 ms-md-4">
+            <header class="my-3 mt-md-0 mb-md-2 d-xl-flex justify-content-between align-item-center">
+                <h4 class="mb-0 h5 fw-bold">{{ trick.title }}</h4>
+                <span class="text-small">{{ trick.createdAt | date('d/m/Y') }}</span>
+            </header>
+
+            <div>
+                <p class="mb-1 fst-italic">{{ trick.category.name }}</p>
+                <p>{{ trick.content }}</p>
+                <p>
+                    <a href="#" class="btn btn-action scale btn-sm shadow-sm">Lire la suite</a>
+                </p>
+            </div>
+        </div>
+    
+    </article>
+</div>

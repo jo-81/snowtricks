@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <section>
+    <section class="mb-5">
         <p>
-            SnowTricks est un site communautaire qui parle de snowboard. <br>
+            <strong class="text-primary">SnowTricks</strong> est un site communautaire qui parle de snowboard. <br>
             Ce site vous permettra de partager votre passion sur le snowboard en rédigeant des articles sur les différentes figures pouvant être réalisées.
         </p>
         <p>
@@ -11,6 +11,10 @@
             Ci-dessous vous pouvez trouver la liste des dernières figures ajoutées par les membres inscrits.
         </p>
 
-        <p>Que ce soit pour le partage ou la découverte ( ou bien même les deux ) : <a href="#">inscrivez-vous</a></p>
+        <p>Que ce soit pour le partage ou la découverte : <a href="#">inscrivez-vous</a></p>
+    </section>
+
+    <section>
+        {{ component('trick_list') }}
     </section>
 {% endblock %}
