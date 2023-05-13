@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Category;
 use App\Entity\Trick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -37,5 +38,47 @@ class TrickRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * search.
+     *
+     * @return array<mixed>
+     */
+    public function search(string $query = ''): array
+    {
+        if (empty($query)) {
+            return [];
+        }
+
+        /* @phpstan-ignore-next-line */
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.title LIKE :query')
+            ->setParameter('query', '%'.$query.'%')
+            ->orderBy('t.title', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * findByCategory.
+     *
+     * @return array<mixed>
+     */
+    public function findByCategory(Category $category, int $exclude, int $limit = 3): array
+    {
+        /* @phpstan-ignore-next-line */
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.category = :cat')
+            ->andWhere('t.id != :exclude')
+            ->select('t.id, t.title, t.slug')
+            ->setParameter('cat', $category)
+            ->setParameter('exclude', $exclude)
+            ->orderBy('t.title', 'ASC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

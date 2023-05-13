@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ trick.title }}{% endblock %}
+
+{% block body %}
+    <section>
+        <header class="mb-4">
+            <p>Publié le {{ trick.createdAt | date('d/m/Y') }} par {{ trick.author.username }}</p>
+        </header>
+
+        <div class="row g-4">
+            <section class="{{
+                html_classes("col-12", {
+                    "col-lg-8": tricksSameCategory is not empty
+                })
+            }}">
+                {{ trick.content }}
+
+                {{ component('comment', {
+                    'trick': trick
+                }) }}
+            </section>
+
+            {% if tricksSameCategory is not empty %}
+                <aside class="col-12 col-lg-4">
+                    {# Liste des figures de la même catégorie #}
+                    <div>
+                        <h3 class="h5 fw-bold">Dans la même catégorie</h3>
+                        <ul class="list-group">
+                            {% for t in tricksSameCategory %}
+                                <li class="list-group-item">
+                                    <a href="{{ path('trick.show', {slug: t.slug}) }}">{{ t.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {# Liste des figures de la même catégorie #}
+                </aside>
+            {% endif %}
+        </div>
+
+    </section>
+{% endblock %}

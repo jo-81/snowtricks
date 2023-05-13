@@ -1,0 +1,16 @@
+<div{{ attributes.defaults({ class: 'col-12' }) }}>
+    <header class="py-2 border-bottom d-flex align-items-center">
+        <span>
+            {{ avatar(comment.author) }}
+        </span>
+
+        <div class="ms-3">
+            <span class="fw-bold d-block">{{ comment.author.username }}</span>
+            <span class="small d-block">{{ comment.createdAt | date('d/m/Y h:i') }}</span>
+        </div>
+    </header>
+
+    <div class="mt-2">
+        {{ comment.content }}
+    </div>
+</div>

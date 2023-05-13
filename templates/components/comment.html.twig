@@ -1,0 +1,27 @@
+<div{{ attributes.defaults({ class: 'mt-5' }) }}>
+
+    <header class="mb-4">
+        <h4 class="h5 fw-bold">{{ plurial(this.count, 'Commentaire', 'Commentaires') }} ({{ this.count }})</h4>
+    </header>
+
+    <div class="row g-5 mb-4">
+        {% for comment in this.comments %}
+            {{ component('card_comment', {
+                'comment': comment
+            }) }}
+        {% endfor %}
+    </div>
+
+    {% if this.showButton %}
+    <button class="btn btn-outline-primary scale"
+            data-action-name="increment()"
+            data-action="live#action">Plus de commentaires
+            
+        <div    data-loading 
+                class="ms-3 spinner-border spinner-border-sm" 
+                role="status">
+            <span class="visually-hidden">Loading</span>
+        </div>
+    </button>
+    {% endif %}
+</div>
