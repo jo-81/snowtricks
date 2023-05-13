@@ -1,3 +1,5 @@
+
+
 <header>
     <nav id="navbar" class="shadow navbar navbar-expand-md position-fixed w-100 top-0 bg-primary bg-opacity-50 z-index-5 py-4">
         <div class="container">
@@ -30,8 +32,21 @@
     <div class="wrap position-relative image" style="background-image: url('{{ asset('images/homepage.jpg') }}')">
         <div class="position-absolute top-50 start-0 bottom-0 end-0">
             <div class="container text-center text-md-start">
-                <h1 class="display-3 fw-bold text-uppercase">SnowTricks</h1>
-                <p class="mb-0 h5 fw-bold">Partagez votre passion du snowboard</p>
+                <h1 class="display-3 fw-bold text-uppercase">
+                    {% if trick is null %} 
+                        SnowTricks 
+                    {% else %} 
+                        {{ trick.title }} 
+                    {% endif %}
+                </h1>
+                
+                <p class="mb-0 h5 fw-bold">
+                    {% if trick is null %}
+                        Partagez votre passion du snowboard
+                    {% else %}
+                        {{ trick.category.name }}
+                    {% endif %}
+                </p>
             </div>
         </div>
     </div>

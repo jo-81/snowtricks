@@ -13,9 +13,9 @@
 
             <div>
                 <p class="mb-1 fst-italic">{{ trick.category.name }}</p>
-                <p>{{ trick.content }}</p>
+                <p>{{ trick.content |u.truncate(100, ' ...', false) }}</p>
                 <p>
-                    <a href="#" class="btn btn-action scale btn-sm shadow-sm">Lire la suite</a>
+                    <a href="{{ path('trick.show', {slug: trick.slug}) }}" class="btn btn-action scale btn-sm shadow-sm">Lire la suite</a>
                 </p>
             </div>
         </div>

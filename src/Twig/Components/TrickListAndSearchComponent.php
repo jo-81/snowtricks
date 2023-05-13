@@ -40,7 +40,11 @@ final class TrickListAndSearchComponent
     #[LiveAction]
     public function setCategoryName(#[LiveArg] string $categoryName): void
     {
-        $this->categoryName = $categoryName;
+        if (!empty($this->query)) {
+            $this->categoryName = 'all';
+        } else {
+            $this->categoryName = $categoryName;
+        }
     }
 
     /**

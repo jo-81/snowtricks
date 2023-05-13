@@ -19,7 +19,7 @@
         {% endblock %}
     </head>
     <body class="bg-light">
-        {% include 'front/partials/_navbar.html.twig' %}
+        {% include 'front/partials/_navbar.html.twig' with {'trick': trick ?? null} %}
         <main class="wrap py-4 bg-white overflow-hidden">
             <div class="container">
                 {% block body %}{% endblock %}
