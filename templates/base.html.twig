@@ -18,13 +18,21 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body class="bg-light">
-        {% include 'front/partials/_navbar.html.twig' with {'trick': trick ?? null} %}
-        <main class="wrap py-4 bg-white overflow-hidden">
+    
+    <body class="{{ html_classes("bg-light", {"vh-100 d-flex": "connexion" in app.request.requestUri}) }}">
+        {% if 'connexion' not in app.request.requestUri %}
+            {% include 'front/partials/_navbar.html.twig' with {'trick': trick ?? null} %}
+        {% endif %}
+
+        <main class="{{ html_classes("wrap py-4 bg-white overflow-hidden", {
+            "col-12 col-md-8 col-lg-6 col-xl-4": "connexion" in app.request.requestUri
+        }) }}">
             <div class="container">
                 {% block body %}{% endblock %}
             </div>
         </main>
-        {% include 'front/partials/_footer.html.twig' %}
+        {% if 'connexion' not in app.request.requestUri %}
+            {% include 'front/partials/_footer.html.twig' %}
+        {% endif %}
     </body>
 </html>
