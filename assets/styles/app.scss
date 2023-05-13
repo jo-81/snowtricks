@@ -1,13 +1,13 @@
 /* COLORS */
 $primary:       #0073E6;
 $link-color:    #f57600;
-$secondary:     grey;
-$success:       green;
-$info:          cyan;
-$warning:       yellow;
-$danger:        red;
+$secondary:     #A7AABC;
+$success:       #6FFACC;
+$info:          #8656EE;
+$warning:       #FF8F7F;
+$danger:        #EF0056;
 $light:         #d9e4ff;
-$dark:          black;
+$dark:          #434656;
 
 $theme-colors: (
     "primary":    $primary,
@@ -39,6 +39,14 @@ $form-label-font-weight: bold;
 
 /* LIST */
 $list-group-border-width: 0;
+
+/* ALERT */
+$alert-border-radius: 0;
+
+/* DROPDOWN */
+$caret-width: 0;
+$dropdown-border-radius: 0;
+$dropdown-border-width: 0;
 
 .wrap {
     max-width: 1440px;
