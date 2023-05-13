@@ -32,10 +32,10 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
         $request->getSession()->set(Security::LAST_USERNAME, $username);
 
         return new Passport(
-            new UserBadge($username), /** @phpstan-ignore-line */
-            new PasswordCredentials($request->request->get('password', '')), /** @phpstan-ignore-line */
+            new UserBadge($username), /* @phpstan-ignore-line */
+            new PasswordCredentials($request->request->get('password', '')), /* @phpstan-ignore-line */
             [
-                new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')), /** @phpstan-ignore-line */
+                new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')), /* @phpstan-ignore-line */
             ]
         );
     }

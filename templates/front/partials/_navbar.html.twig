@@ -17,7 +17,7 @@
                         <li class="nav-item">
                             <a class="{{ html_classes('nav-link', {
                                 "active": 'inscription' in app.request.requestUri
-                            }) }}" href="#">Inscription</a>
+                            }) }}" href="{{ path('user.register') }}">Inscription</a>
                         </li>
 
                         <li class="nav-item">

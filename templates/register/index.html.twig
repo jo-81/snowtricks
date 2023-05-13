@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription | {{ parent() }}{% endblock %}
+
+{% block body %}
+    <section class="p-3 p-lg-5">
+        {{ form_start(form) }}
+
+            <h1 class="h3 mb-3 fw-bold text-uppercase">Inscription</h1>
+
+            {{ form_row(form.username) }}
+
+            {{ form_row(form.email) }}
+
+            {{ form_row(form.password) }}
+
+            <div>
+                <button class="btn btn-primary scale">Inscription</button>
+            </div>
+
+        {{ form_end(form) }}
+    </section>
+{% endblock %}

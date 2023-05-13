@@ -19,19 +19,22 @@
         {% endblock %}
     </head>
     
-    <body class="{{ html_classes("bg-light", {"vh-100 d-flex": "connexion" in app.request.requestUri}) }}">
-        {% if 'connexion' not in app.request.requestUri %}
+    <body class="{{ html_classes("bg-light", {
+            "vh-100 d-flex": app.request.requestUri in ['/inscription', '/connexion']
+        }) }}">
+
+        {% if app.request.requestUri not in ['/inscription', '/connexion'] %}
             {% include 'front/partials/_navbar.html.twig' with {'trick': trick ?? null} %}
         {% endif %}
 
         <main class="{{ html_classes("wrap py-4 bg-white overflow-hidden", {
-            "col-12 col-md-8 col-lg-6 col-xl-4": "connexion" in app.request.requestUri
+            "col-12 col-md-8 col-lg-6 col-xl-4": app.request.requestUri in ['/inscription', '/connexion']
         }) }}">
             <div class="container">
                 {% block body %}{% endblock %}
             </div>
         </main>
-        {% if 'connexion' not in app.request.requestUri %}
+        {% if app.request.requestUri not in ['/inscription', '/connexion'] %}
             {% include 'front/partials/_footer.html.twig' %}
         {% endif %}
     </body>
