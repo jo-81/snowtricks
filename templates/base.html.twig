@@ -30,8 +30,19 @@
         <main class="{{ html_classes("wrap py-4 bg-white overflow-hidden", {
             "col-12 col-md-8 col-lg-6 col-xl-4": app.request.requestUri in ['/inscription', '/connexion']
         }) }}">
-            <div class="container">
+            <div class="container position-relative">
                 {% block body %}{% endblock %}
+
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        {{ component('toast', {
+                            'message': message,
+                            'type': label,
+                            'show': true,
+                        }) }}
+                    {% endfor %}
+                {% endfor %}
+
             </div>
         </main>
         {% if app.request.requestUri not in ['/inscription', '/connexion'] %}

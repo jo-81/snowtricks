@@ -8,4 +8,5 @@ App\Entity\User:
   user_{2..10}:
     username: '<username()>'
     email: '<email()>'
+    roles: '[ROLE_CONTRIBUTOR]'
     password: \$2y\$10\$Q7lCAYGg1ipk0Yd86bBTwebvm.PaQh5kUyWsNInCjzetXQm9ZXGxC

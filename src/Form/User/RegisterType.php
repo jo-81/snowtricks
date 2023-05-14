@@ -29,7 +29,7 @@ class RegisterType extends AbstractType
                     'class' => 'scale',
                 ],
             ])
-            ->add('password', PasswordType::class, [
+            ->add('plainPassword', PasswordType::class, [
                 'label' => 'Mot de passe',
                 'help' => 'Votre mot de passe doit contenir une majuscule, un nombre et un minimum de 10 caractères',
                 'attr' => [
