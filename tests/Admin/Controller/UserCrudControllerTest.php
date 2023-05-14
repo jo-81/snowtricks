@@ -74,4 +74,36 @@ class UserCrudControllerTest extends AbstractCrudTestCase
         $this->client->request('GET', $this->getCrudUrl('detail', 3));
         static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
+
+    /**
+     * testAccessPageUserListWhenUserNotLogged
+     * Utilisateur non connecté.
+     */
+    public function testAccessPageUserListWhenUserNotLogged(): void
+    {
+        $this->client->request('GET', $this->getCrudUrl('index'));
+        static::assertResponseRedirects('/connexion');
+    }
+
+    /**
+     * testAccessPageUserListWhenUserLoggedWithRoleAdmin
+     * Utilisateur avec le role ROLE_ADMIN.
+     */
+    public function testAccessPageUserListWhenUserLoggedWithRoleAdmin(): void
+    {
+        $this->login($this->client, ['id' => '1']);
+        $this->client->request('GET', $this->getCrudUrl('index', 1));
+        static::assertResponseIsSuccessful();
+    }
+
+    /**
+     * testAccessPageUserListWhenUserLoggedWithRoleAdmin
+     * Utilisateur avec le role ROLE_USER.
+     */
+    public function testAccessPageUserListWhenUserLoggedWithRoleUser(): void
+    {
+        $this->login($this->client, ['id' => '2']);
+        $this->client->request('GET', $this->getCrudUrl('index', 2));
+        static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+    }
 }

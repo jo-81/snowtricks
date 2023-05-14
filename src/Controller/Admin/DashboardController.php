@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -32,7 +33,14 @@ class DashboardController extends AbstractDashboardController
         /** @var User $user */
         $user = $this->getUser();
 
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home')->setPermission('ROLE_ADMIN');
         yield MenuItem::linkToCrud('Mon profil', 'fa fa-id-card', User::class)->setAction('detail')->setEntityId($user->getId());
+    }
+
+    public function configureCrud(): Crud
+    {
+        return Crud::new()
+            ->setPaginatorPageSize(10)
+        ;
     }
 }
