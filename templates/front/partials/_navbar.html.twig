@@ -28,7 +28,7 @@
                         {% endif %}
                     </ul>
 
-                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <div class="dropdown">
                         <a  class="dropdown-toggle" 
                             type="button" 
@@ -37,9 +37,18 @@
                         </a>
 
                         <ul class="dropdown-menu shadow">
-                            <li><a class="dropdown-item" href="#">Profil</a></li>
+                            <li>
+                                <a  class="dropdown-item" 
+                                    href="{{ ea_url()
+                                    .setController('App\\Controller\\Admin\\UserCrudController')
+                                    .setAction('detail')
+                                    .setEntityId(app.user.id) }}">Profil</a>
+                            </li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
+
+                            <li>
+                                <a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a>
+                            </li>
                         </ul>
                         </div>
                     {% endif %}
