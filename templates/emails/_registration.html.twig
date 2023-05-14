@@ -1,0 +1,15 @@
+{% apply inline_css(source('@styles/email.css')) %}
+    <section class="card-email">
+        <div class="container-email">
+            <header class="card-header">
+                <h1 class="card-title">SnowTricks</h1>
+            </header>
+
+            <div class="card-body">
+                <h2 class="card-subtitle">Bienvenue {{ username }} !</h2>
+                <p>Merci de votre inscription sur notre site !</p>
+                <p>A bientôt</p>
+            </div>
+        </div>
+    </section>
+{% endapply %}
