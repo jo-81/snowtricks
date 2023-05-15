@@ -106,4 +106,20 @@ class UserCrudControllerTest extends AbstractCrudTestCase
         $this->client->request('GET', $this->getCrudUrl('index', 2));
         static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
+    
+    /**
+     * testAccessEditProfil
+     * Utilisateur connecté voulant modifier ses informations
+     *
+     * @return void
+     */
+    public function testAccessEditProfil(): void
+    {
+        $this->login($this->client, ['id' => '2']);
+        $this->client->request('GET', $this->getCrudUrl('edit', 2));
+        static::assertResponseIsSuccessful();
+
+        $this->client->request('GET', $this->getCrudUrl('edit', 3));
+        static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+    }
 }

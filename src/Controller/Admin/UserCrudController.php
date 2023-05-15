@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Form\Image\AvatarType;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -15,6 +16,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class UserCrudController extends AbstractCrudController
@@ -47,20 +49,27 @@ class UserCrudController extends AbstractCrudController
             ->remove(Crud::PAGE_DETAIL, Action::INDEX)
             ->remove(Crud::PAGE_INDEX, Action::EDIT)
             ->remove(Crud::PAGE_INDEX, Action::NEW)
+            ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
 
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
 
             ->setPermission(CRUD::PAGE_DETAIL, 'USER_PROFILE')
             ->setPermission(CRUD::PAGE_INDEX, 'ROLE_ADMIN')
+            ->setPermission(CRUD::PAGE_EDIT, 'USER_EDIT')
         ;
     }
 
     public function configureFields(string $pageName): iterable
     {
         return [
-            TextField::new('username', 'Pseudo'),
+            TextField::new('username', 'Pseudo')->hideOnForm(),
             EmailField::new('email', 'Adresse email'),
-            DateTimeField::new('createdAt', 'Inscription'),
+            DateTimeField::new('createdAt', 'Inscription')->hideOnForm(),
+            DateTimeField::new('editedAt', 'Dernière modification')->hideOnForm(),
+
+            TextField::new('avatar')->setFormType(AvatarType::class)->onlyWhenUpdating()->setRequired(false),
+
+            ImageField::new('avatar.path')->setBasePath('/images/avatar/')->onlyOnDetail(),
         ];
     }
 
