@@ -65,11 +65,11 @@ class UserCrudController extends AbstractCrudController
             TextField::new('username', 'Pseudo')->hideOnForm(),
             EmailField::new('email', 'Adresse email'),
             DateTimeField::new('createdAt', 'Inscription')->hideOnForm(),
-            DateTimeField::new('editedAt', 'Dernière modification')->hideOnForm(),
+            DateTimeField::new('editedAt', 'Dernière modification')->onlyOnDetail(),
 
             TextField::new('avatar')->setFormType(AvatarType::class)->onlyWhenUpdating()->setRequired(false),
 
-            ImageField::new('avatar.path')->setBasePath('/images/avatar/')->onlyOnDetail(),
+            ImageField::new('avatar.path', 'Avatar')->setBasePath('/images/avatar/')->onlyOnDetail(),
         ];
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Blocked;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -33,14 +34,31 @@ class DashboardController extends AbstractDashboardController
         /** @var User $user */
         $user = $this->getUser();
 
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home')->setPermission('ROLE_ADMIN');
-        yield MenuItem::linkToCrud('Mon profil', 'fa fa-id-card', User::class)->setAction('detail')->setEntityId($user->getId());
+        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home')
+            ->setPermission('ROLE_ADMIN');
+
+        yield MenuItem::section('Utilisateurs');
+        yield MenuItem::linkToCrud('Liste des utilisateurs', 'fa fa-users', User::class)
+            ->setAction('index')
+            ->setPermission('ROLE_ADMIN');
+
+        yield MenuItem::linkToCrud('Utilisateurs bloqués', 'fa fa-lock', Blocked::class)
+            ->setAction('index')
+            ->setPermission('ROLE_ADMIN');
+
+        yield MenuItem::section();
+
+        yield MenuItem::linkToCrud('Mon profil', 'fa fa-id-card', User::class)
+            ->setAction('detail')
+            ->setEntityId($user->getId());
     }
 
     public function configureCrud(): Crud
     {
         return Crud::new()
             ->setPaginatorPageSize(10)
+            ->setDateTimeFormat('full', 'short')
+            ->setTimezone('Europe/Paris')
         ;
     }
 }

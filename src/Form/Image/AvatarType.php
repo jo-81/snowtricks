@@ -6,7 +6,6 @@ use App\Entity\Image;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Image as ImageConstraint;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class AvatarType extends AbstractType
@@ -15,9 +14,10 @@ class AvatarType extends AbstractType
     {
         $builder
             ->add('imageFile', VichImageType::class, [
-                'label'         => ' ',
-                'required'      => false,
-                'allow_delete'  => false,
+                'label' => ' ',
+                'required' => false,
+                'allow_delete' => false,
+                'help' => 'Une image avec une largeur de 150px et de type .png ou .jpg',
             ])
         ;
     }

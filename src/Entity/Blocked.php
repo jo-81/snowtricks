@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use App\Repository\BlockedRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BlockedRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[UniqueEntity('person')]
 class Blocked
 {
     #[ORM\Id]
@@ -17,10 +20,13 @@ class Blocked
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    #[Assert\NotBlank(
+        message: 'Ce champs ne peut pas être vide'
+    )]
     #[ORM\Column(length: 255)]
     private ?string $reason = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne()]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $person = null;
 
