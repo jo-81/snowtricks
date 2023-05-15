@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Repository\ResetPasswordRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ResetPasswordRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[UniqueEntity('person')]
 class ResetPassword
 {
     #[ORM\Id]
@@ -83,6 +85,10 @@ class ResetPassword
     #[ORM\PrePersist]
     public function setValueWhenPersist(): void
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $date = new \DateTimeImmutable();
+        $expiredDate = $date->add(new \DateInterval('P1D'));
+
+        $this->createdAt = $date;
+        $this->expiredAt = $expiredDate;
     }
 }

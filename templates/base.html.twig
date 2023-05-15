@@ -20,15 +20,15 @@
     </head>
     
     <body class="{{ html_classes("bg-light", {
-            "vh-100 d-flex": app.request.requestUri in ['/inscription', '/connexion']
+            "vh-100 d-flex": app.request.requestUri in ['/inscription', '/connexion', '/forget-password']
         }) }}">
 
-        {% if app.request.requestUri not in ['/inscription', '/connexion'] %}
+        {% if app.request.requestUri not in ['/inscription', '/connexion', '/forget-password'] %}
             {% include 'front/partials/_navbar.html.twig' with {'trick': trick ?? null} %}
         {% endif %}
 
         <main class="{{ html_classes("wrap py-4 bg-white overflow-hidden", {
-            "col-12 col-md-8 col-lg-6 col-xl-4": app.request.requestUri in ['/inscription', '/connexion']
+            "col-12 col-md-8 col-lg-6 col-xl-4": app.request.requestUri in ['/inscription', '/connexion', '/forget-password']
         }) }}">
             <div class="container position-relative">
                 {% block body %}{% endblock %}
@@ -45,7 +45,7 @@
 
             </div>
         </main>
-        {% if app.request.requestUri not in ['/inscription', '/connexion'] %}
+        {% if app.request.requestUri not in ['/inscription', '/connexion', '/forget-password'] %}
             {% include 'front/partials/_footer.html.twig' %}
         {% endif %}
     </body>

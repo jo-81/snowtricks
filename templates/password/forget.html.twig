@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mot de pass oublié ? | {{ parent() }}{% endblock %}
+
+{% block body %}
+    <section class="p-3 p-lg-5">
+        <form method="POST">
+
+            <header class="mb-3">
+                <h1 class="h3 mb-0 fw-bold text-uppercase">Mot de passe oublié ?</h1>
+                <p class="mb-0">Renseigner votre adresse email pour recevoir un lien pour de ré initialisation.</p>
+            </header>
+
+            <div class="mb-3">
+                <label class="form-label" for="email">Adresse email</label>
+                <input class="form-control scale" id="email" name="email" required/>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('forget_password') }}">
+
+            <div>
+                <button class="btn btn-primary scale">Valider</button>
+            </div>
+
+        </form>
+    </section>
+{% endblock %}

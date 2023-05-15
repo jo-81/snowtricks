@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Blocked;
+use App\Entity\ResetPassword;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -43,6 +44,10 @@ class DashboardController extends AbstractDashboardController
             ->setPermission('ROLE_ADMIN');
 
         yield MenuItem::linkToCrud('Utilisateurs bloqués', 'fa fa-lock', Blocked::class)
+            ->setAction('index')
+            ->setPermission('ROLE_ADMIN');
+
+        yield MenuItem::linkToCrud('Demande de mot de passe', 'fa fa-at', ResetPassword::class)
             ->setAction('index')
             ->setPermission('ROLE_ADMIN');
 
