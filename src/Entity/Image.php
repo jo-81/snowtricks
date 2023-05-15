@@ -4,9 +4,9 @@ namespace App\Entity;
 
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 #[Vich\Uploadable]
@@ -24,7 +24,7 @@ class Image extends Media
         maxWidth: 150,
         maxHeight: 150,
     )]
-    #[Assert\file(
+    #[Assert\File(
         extensions: ['png', 'jpg'],
         extensionsMessage: "Le type de l'image n'est pas valide. Seulement les types .png et .jpg sont autorisés."
     )]
@@ -32,6 +32,7 @@ class Image extends Media
     private ?File $imageFile = null;
 
     #[ORM\Column(nullable: true)]
+    /** @phpstan-ignore-next-line */
     private ?\DateTimeImmutable $updatedAt = null;
 
     public function getId(): ?int
@@ -67,7 +68,7 @@ class Image extends Media
 
     public function __toString()
     {
-        return $this->path;
+        return $this->path; /* @phpstan-ignore-line */
     }
 
     public function __serialize()
@@ -78,8 +79,15 @@ class Image extends Media
         ];
     }
 
-    public function __unserialize($serialized)
+    /**
+     * __unserialize.
+     *
+     * @param array<mixed> $serialized
+     *
+     * @return void
+     */
+    public function __unserialize(array $serialized)
     {
-        list($this->id, $this->path) = unserialize(serialize($serialized));
+        list($this->id, $this->path) = unserialize(serialize($serialized)); /* @phpstan-ignore-line */
     }
 }
