@@ -51,6 +51,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?\DateTimeImmutable $editedAt = null;
 
+    #[Assert\Valid]
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Image $avatar = null;
 
