@@ -3,13 +3,13 @@
 namespace App\Listener;
 
 use App\Entity\User;
-use App\Service\Email\EmailService;
+use App\Service\Email\UserDeleteEmail;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityDeletedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserEasyAdminEvent implements EventSubscriberInterface
 {
-    public function __construct(private EmailService $emailService)
+    public function __construct(private UserDeleteEmail $userDeleteEmail)
     {
     }
 
@@ -24,7 +24,7 @@ class UserEasyAdminEvent implements EventSubscriberInterface
     {
         $entity = $event->getEntityInstance();
         if ($entity instanceof User) {
-            $this->emailService->sendEmailRemoveUser($entity);
+            $this->userDeleteEmail->send($entity);
         }
     }
 }
