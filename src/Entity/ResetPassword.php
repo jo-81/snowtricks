@@ -25,7 +25,7 @@ class ResetPassword
     #[ORM\Column(length: 255)]
     private ?string $token = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne()]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $person = null;
 
