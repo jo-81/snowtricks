@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Blocked;
+use App\Entity\Category;
 use App\Entity\ResetPassword;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -38,7 +39,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home')
             ->setPermission('ROLE_ADMIN');
 
-        yield MenuItem::section('Utilisateurs');
+        yield MenuItem::section('Utilisateurs')->setPermission('ROLE_ADMIN');
         yield MenuItem::linkToCrud('Liste des utilisateurs', 'fa fa-users', User::class)
             ->setAction('index')
             ->setPermission('ROLE_ADMIN');
@@ -48,6 +49,11 @@ class DashboardController extends AbstractDashboardController
             ->setPermission('ROLE_ADMIN');
 
         yield MenuItem::linkToCrud('Demande de mot de passe', 'fa fa-at', ResetPassword::class)
+            ->setAction('index')
+            ->setPermission('ROLE_ADMIN');
+
+        yield MenuItem::section('Catégories')->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToCrud('Liste des catégories', 'fa fa-tags', Category::class)
             ->setAction('index')
             ->setPermission('ROLE_ADMIN');
 
