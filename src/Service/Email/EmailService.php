@@ -87,4 +87,19 @@ class EmailService
 
         $this->mailer->send($email);
     }
+
+    public function sendEmailResetPassword(User $user): void
+    {
+        $email = (new TemplatedEmail())
+            ->from('snowtricks@domaine.fr')
+            ->to($user->getEmail()) /* @phpstan-ignore-line */
+            ->subject('Ré initialisation de votre mot de passe')
+            ->htmlTemplate('emails/_reset_password.html.twig')
+            ->context([
+                'username' => $user->getUsername(),
+            ])
+        ;
+
+        $this->mailer->send($email);
+    }
 }

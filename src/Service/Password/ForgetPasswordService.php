@@ -13,7 +13,7 @@ class ForgetPasswordService
     public function __construct(
         private UserRepository $userRepository,
         private ResetPasswordRepository $resetPasswordRepository,
-        private TokenGeneratorInterface $tokenGenerator,
+        private TokenGeneratorInterface $tokenGenerator
     ) {
     }
 
@@ -46,6 +46,11 @@ class ForgetPasswordService
         $now = new \DateTimeImmutable();
 
         return $now > $resetPassword->getExpiredAt();
+    }
+
+    public function remove(ResetPassword $resetPassword): void
+    {
+        $this->resetPasswordRepository->remove($resetPassword, true);
     }
 
     /**

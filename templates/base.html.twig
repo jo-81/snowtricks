@@ -18,17 +18,19 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
+
+    {% set routes = ['user.register', 'app_login', 'user.forget.password', 'user.reset.password'] %}
     
     <body class="{{ html_classes("bg-light", {
-            "vh-100 d-flex": app.request.requestUri in ['/inscription', '/connexion', '/forget-password']
+            "vh-100 d-flex": app.request.attributes.get('_route') in routes
         }) }}">
 
-        {% if app.request.requestUri not in ['/inscription', '/connexion', '/forget-password'] %}
+        {% if app.request.attributes.get('_route') not in routes %}
             {% include 'front/partials/_navbar.html.twig' with {'trick': trick ?? null} %}
         {% endif %}
 
         <main class="{{ html_classes("wrap py-4 bg-white overflow-hidden", {
-            "col-12 col-md-8 col-lg-6 col-xl-4": app.request.requestUri in ['/inscription', '/connexion', '/forget-password']
+            "col-12 col-md-8 col-lg-6 col-xl-4": app.request.attributes.get('_route') in routes
         }) }}">
             <div class="container position-relative">
                 {% block body %}{% endblock %}
@@ -45,7 +47,7 @@
 
             </div>
         </main>
-        {% if app.request.requestUri not in ['/inscription', '/connexion', '/forget-password'] %}
+        {% if app.request.attributes.get('_route') not in routes %}
             {% include 'front/partials/_footer.html.twig' %}
         {% endif %}
     </body>

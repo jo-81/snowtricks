@@ -19,6 +19,7 @@ class UserEvent implements EventSubscriberInterface
     {
         return [
             UserEventSubscriber::REGISTRATION => ['registration'],
+            UserEventSubscriber::RESET_PASSWORD => ['resetPassword'],
             ResetPasswordEventSubscriber::FORGET_PASSWORD => ['forgetPassword'],
         ];
     }
@@ -29,6 +30,14 @@ class UserEvent implements EventSubscriberInterface
         $user = $event->getUser();
 
         $this->emailService->sendEmailRegistration($user);
+    }
+
+    public function resetPassword(UserEventSubscriber $event): void
+    {
+        /** @var User $user */
+        $user = $event->getUser();
+
+        $this->emailService->sendEmailResetPassword($user);
     }
 
     public function forgetPassword(ResetPasswordEventSubscriber $event): void
