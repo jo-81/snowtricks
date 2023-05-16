@@ -73,7 +73,7 @@ class ResetPasswordTest extends WebTestCase
     {
         $client = static::createClient();
         $resetPassword = $this->getResetPassword(['id' => '1']);
-        $client->request('GET', '/reset-password/'.$resetPassword->getToken()); /** @phpstan-ignore-line */
+        $client->request('GET', '/reset-password/'.$resetPassword->getToken()); /* @phpstan-ignore-line */
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }

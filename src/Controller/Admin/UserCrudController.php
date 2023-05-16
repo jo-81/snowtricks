@@ -18,6 +18,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -26,8 +28,12 @@ class UserCrudController extends AbstractCrudController
         return User::class;
     }
 
-    public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
-    {
+    public function createIndexQueryBuilder(
+        SearchDto $searchDto,
+        EntityDto $entityDto,
+        FieldCollection $fields,
+        FilterCollection $filters
+    ): QueryBuilder {
         return parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters)
             ->andWhere('entity.roles NOT LIKE :role')
             ->setParameter('role', '%ROLE_ADMIN%')
@@ -67,6 +73,18 @@ class UserCrudController extends AbstractCrudController
             DateTimeField::new('createdAt', 'Inscription')->hideOnForm(),
             DateTimeField::new('editedAt', 'Dernière modification')->onlyOnDetail(),
 
+            TextField::new('plainPassword', 'Mot de passe')
+                ->setFormType(RepeatedType::class)
+                ->setFormTypeOptions([
+                    'type' => PasswordType::class,
+                    'first_options' => [
+                        'label' => 'Mot de passe',
+                        'help' => 'Votre mot de passe doit contenir une majuscule, un nombre et un minimum de 10 caractères',
+                    ],
+                    'second_options' => ['label' => 'Répéter le mot de passe'],
+                ])
+                ->onlyWhenUpdating(),
+
             TextField::new('avatar')->setFormType(AvatarType::class)->onlyWhenUpdating()->setRequired(false),
 
             ImageField::new('avatar.path', 'Avatar')->setBasePath('/images/avatar/')->onlyOnDetail(),
@@ -78,6 +96,7 @@ class UserCrudController extends AbstractCrudController
         return $crud
             ->setPageTitle(CRUD::PAGE_DETAIL, 'Profil')
             ->setPageTitle(CRUD::PAGE_INDEX, 'Utilisateurs')
+            ->setPageTitle(CRUD::PAGE_EDIT, 'Modifier')
         ;
     }
 }
