@@ -120,4 +120,21 @@ class UserCrudControllerTest extends AbstractCrudTestCase
         $this->client->request('GET', $this->getCrudUrl('edit', 3));
         static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
+
+    public function testAccessDeleteProfil(): void
+    {
+        $this->login($this->client, ['id' => '2']);
+        $this->client->request('GET', $this->getCrudUrl('delete', 2));
+        static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+
+        $this->client->request('GET', $this->getCrudUrl('delete', 3));
+        static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+    }
+
+    public function testAccessDeleteProfilWithRoleAdmin(): void
+    {
+        $this->login($this->client, ['id' => '1']);
+        $this->client->request('GET', $this->getCrudUrl('delete', 2));
+        static::assertResponseStatusCodeSame(Response::HTTP_FOUND);
+    }
 }

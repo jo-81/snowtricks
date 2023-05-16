@@ -26,7 +26,7 @@ class ResetPassword
     private ?string $token = null;
 
     #[ORM\OneToOne()]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?User $person = null;
 
     public function getId(): ?int

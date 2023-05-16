@@ -102,4 +102,19 @@ class EmailService
 
         $this->mailer->send($email);
     }
+
+    public function sendEmailRemoveUser(User $user): void
+    {
+        $email = (new TemplatedEmail())
+            ->from('snowtricks@domaine.fr')
+            ->to($user->getEmail()) /* @phpstan-ignore-line */
+            ->subject('Suppression de votre compte')
+            ->htmlTemplate('emails/_remove_account.html.twig')
+            ->context([
+                'username' => $user->getUsername(),
+            ])
+        ;
+
+        $this->mailer->send($email);
+    }
 }

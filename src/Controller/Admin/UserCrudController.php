@@ -62,6 +62,7 @@ class UserCrudController extends AbstractCrudController
             ->setPermission(CRUD::PAGE_DETAIL, 'USER_PROFILE')
             ->setPermission(CRUD::PAGE_INDEX, 'ROLE_ADMIN')
             ->setPermission(CRUD::PAGE_EDIT, 'USER_EDIT')
+            ->setPermission(Action::DELETE, 'USER_DELETE')
         ;
     }
 
