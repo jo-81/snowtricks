@@ -26,41 +26,60 @@ class CategoryCrudControllerTest extends AbstractCrudTestCase
 
     /**
      * testAccessCategoryWhenUserNotLogged.
+     *
+     * @dataProvider dataProviderPageCategory
      */
-    public function testAccessCategoryWhenUserNotLogged(): void
+    public function testAccessCategoryWhenUserNotLogged(string $page): void
     {
         $this->client->request('GET', $this->getCrudUrl('index'));
         static::assertResponseRedirects('/connexion');
 
-        $this->client->request('GET', $this->getCrudUrl('detail', '1'));
+        $this->client->request('GET', $this->getCrudUrl($page, '1'));
         static::assertResponseRedirects('/connexion');
     }
 
     /**
      * testAccessCategoryWhenUserLoggedWithRoleAdmin.
+     *
+     * @dataProvider dataProviderPageCategory
      */
-    public function testAccessCategoryWhenUserLoggedWithRoleAdmin(): void
+    public function testAccessCategoryWhenUserLoggedWithRoleAdmin(string $page): void
     {
         $this->login($this->client, ['id' => '1']);
 
         $this->client->request('GET', $this->getCrudUrl('index'));
         static::assertResponseIsSuccessful();
 
-        $this->client->request('GET', $this->getCrudUrl('detail', '1'));
+        $this->client->request('GET', $this->getCrudUrl($page, '1'));
         static::assertResponseIsSuccessful();
     }
 
     /**
      * testAccessCategoryWhenUserLoggedWithRoleUser.
+     *
+     * @dataProvider dataProviderPageCategory
      */
-    public function testAccessCategoryWhenUserLoggedWithRoleUser(): void
+    public function testAccessCategoryWhenUserLoggedWithRoleUser(string $page): void
     {
         $this->login($this->client, ['id' => '2']);
 
         $this->client->request('GET', $this->getCrudUrl('index'));
         static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
 
-        $this->client->request('GET', $this->getCrudUrl('detail', '1'));
+        $this->client->request('GET', $this->getCrudUrl($page, '1'));
         static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+    }
+
+    /**
+     * dataProviderPageCategory.
+     *
+     * @return array<int, array<int, string>>
+     */
+    public function dataProviderPageCategory(): array
+    {
+        return [
+            ['detail'],
+            ['new'],
+        ];
     }
 }
