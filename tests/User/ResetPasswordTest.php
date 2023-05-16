@@ -8,6 +8,7 @@ use App\Tests\Traits\EntityTrait;
 use App\Tests\Traits\UserLoginTrait;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class ResetPasswordTest extends WebTestCase
 {
@@ -51,5 +52,40 @@ class ResetPasswordTest extends WebTestCase
         $this->assertResponseRedirects('/');
         $this->assertInstanceOf(ResetPassword::class, $this->getResetPassword(['person' => $user]));
         $this->assertQueuedEmailCount(1);
+    }
+
+    /**
+     * testRouteResetPasswordWithoutToken
+     * Pour réinitialiser son mot de passe sans avoir fait la demande.
+     */
+    public function testRouteResetPasswordWithoutToken(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/reset-password');
+        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * testRouteResetPasswordWithToken
+     * Pour réinitialiser son mot de passe avec un bon token.
+     */
+    public function testRouteResetPasswordWithToken(): void
+    {
+        $client = static::createClient();
+        $resetPassword = $this->getResetPassword(['id' => '1']);
+        $client->request('GET', '/reset-password/'.$resetPassword->getToken()); /** @phpstan-ignore-line */
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+    }
+
+    /**
+     * testRouteResetPasswordWithBadToken.
+     */
+    public function testRouteResetPasswordWithBadToken(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/reset-password/bad-token');
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
     }
 }
