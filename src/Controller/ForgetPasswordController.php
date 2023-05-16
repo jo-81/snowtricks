@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Blocked;
 use App\Entity\User;
 use App\EventSubscriber\ResetPasswordEventSubscriber;
+use App\Repository\BlockedRepository;
 use App\Service\Password\ForgetPasswordService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -17,7 +19,8 @@ class ForgetPasswordController extends AbstractController
     public function index(
         Request $request,
         ForgetPasswordService $forgetPasswordService,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
+        BlockedRepository $blockedRepository
     ): Response {
         if ($this->getUser()) {
             return $this->redirectToRoute('homepage');
@@ -34,6 +37,14 @@ class ForgetPasswordController extends AbstractController
             $email = $request->request->get('email');
             $user = $forgetPasswordService->existUserByEmail($email);
 
+            // Si l'utilisateur a son compte bloqué
+            $userBlocked = $blockedRepository->findOneBy(['person' => $user]);
+            if ($userBlocked instanceof Blocked) {
+                $this->addFlash('danger', 'Vous ne pouvez pas faire cette demande, votre compte a été bloqué.');
+
+                return $this->redirectToRoute('homepage');
+            }
+
             if (!$user instanceof User) {
                 $this->addFlash('danger', 'Cette adresse email n\'existe pas');
 
@@ -41,7 +52,6 @@ class ForgetPasswordController extends AbstractController
             }
 
             $resetPassword = $forgetPasswordService->get($user);
-
             // Aucune demande d'enregistré
             if (is_null($resetPassword)) {
                 $newResetPassword = $forgetPasswordService->persist($user);
