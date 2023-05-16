@@ -10,10 +10,11 @@ class ProfilVoter extends Voter
 {
     public const PROFILE = 'USER_PROFILE';
     public const EDIT = 'USER_EDIT';
+    public const DELETE = 'USER_DELETE';
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return in_array($attribute, [self::PROFILE, self::EDIT])
+        return in_array($attribute, [self::PROFILE, self::EDIT, self::DELETE])
             && $subject instanceof \App\Entity\User;
     }
 
@@ -33,6 +34,12 @@ class ProfilVoter extends Voter
 
             case self::EDIT:
                 if ($user == $subject) {
+                    return true;
+                }
+                break;
+
+            case self::DELETE:
+                if (in_array('ROLE_ADMIN', $user->getRoles())) {
                     return true;
                 }
                 break;

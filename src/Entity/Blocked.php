@@ -27,7 +27,7 @@ class Blocked
     private ?string $reason = null;
 
     #[ORM\OneToOne()]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?User $person = null;
 
     public function getId(): ?int

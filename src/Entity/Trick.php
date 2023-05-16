@@ -33,6 +33,7 @@ class Trick
     private ?\DateTimeImmutable $editedAt = null;
 
     #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?User $author = null;
 
     #[ORM\ManyToOne]
