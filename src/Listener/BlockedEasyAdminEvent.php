@@ -3,15 +3,19 @@
 namespace App\Listener;
 
 use App\Entity\Blocked;
-use App\Service\Email\EmailService;
+use App\Entity\User;
+use App\Service\Email\BlockedEmail;
+use App\Service\Email\UnblockedEmail;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityDeletedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class BlockedEasyAdminEvent implements EventSubscriberInterface
 {
-    public function __construct(private EmailService $emailService)
-    {
+    public function __construct(
+        private BlockedEmail $blockedEmail,
+        private UnblockedEmail $unblockedEmail,
+    ) {
     }
 
     public static function getSubscribedEvents(): array
@@ -26,7 +30,9 @@ class BlockedEasyAdminEvent implements EventSubscriberInterface
     {
         $entity = $event->getEntityInstance();
         if ($entity instanceof Blocked) {
-            $this->emailService->sendEmailBlockedUser($entity);
+            /** @var User $user */
+            $user = $entity->getPerson();
+            $this->blockedEmail->send($user);
         }
     }
 
@@ -34,7 +40,9 @@ class BlockedEasyAdminEvent implements EventSubscriberInterface
     {
         $entity = $event->getEntityInstance();
         if ($entity instanceof Blocked) {
-            $this->emailService->sendEmailUnblockedUser($entity);
+            /** @var User $user */
+            $user = $entity->getPerson();
+            $this->unblockedEmail->send($user);
         }
     }
 }

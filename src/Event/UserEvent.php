@@ -6,13 +6,18 @@ use App\Entity\ResetPassword;
 use App\Entity\User;
 use App\EventSubscriber\ResetPasswordEventSubscriber;
 use App\EventSubscriber\UserEventSubscriber;
-use App\Service\Email\EmailService;
+use App\Service\Email\ForgetPasswordEmail;
+use App\Service\Email\RegisterEmail;
+use App\Service\Email\ResetPasswordEmail;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserEvent implements EventSubscriberInterface
 {
-    public function __construct(private EmailService $emailService)
-    {
+    public function __construct(
+        private ForgetPasswordEmail $forgetPasswordEmail,
+        private RegisterEmail $registerEmail,
+        private ResetPasswordEmail $resetPasswordEmail
+    ) {
     }
 
     public static function getSubscribedEvents(): array
@@ -29,7 +34,7 @@ class UserEvent implements EventSubscriberInterface
         /** @var User $user */
         $user = $event->getUser();
 
-        $this->emailService->sendEmailRegistration($user);
+        $this->registerEmail->send($user);
     }
 
     public function resetPassword(UserEventSubscriber $event): void
@@ -37,7 +42,7 @@ class UserEvent implements EventSubscriberInterface
         /** @var User $user */
         $user = $event->getUser();
 
-        $this->emailService->sendEmailResetPassword($user);
+        $this->resetPasswordEmail->send($user);
     }
 
     public function forgetPassword(ResetPasswordEventSubscriber $event): void
@@ -45,6 +50,8 @@ class UserEvent implements EventSubscriberInterface
         /** @var ResetPassword $entity */
         $entity = $event->getEntity();
 
-        $this->emailService->sendEmailForgetPassword($entity);
+        /** @var User $user */
+        $user = $entity->getPerson();
+        $this->forgetPasswordEmail->send($user);
     }
 }

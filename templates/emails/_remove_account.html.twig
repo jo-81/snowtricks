@@ -1,14 +1,6 @@
-{% apply inline_css(source('@styles/email.css')) %}
-    <section class="card-email">
-        <div class="container-email">
-            <header class="card-header">
-                <h1 class="card-title">SnowTricks</h1>
-            </header>
-
-            <div class="card-body">
-                <h2 class="card-subtitle">Bonjour {{ username }} !</h2>
-                <p>Votre compte a été supprimé</p>
-            </div>
-        </div>
-    </section>
-{% endapply %}
+{% extends 'emails/base.html.twig' %}
+    
+{% block content %}
+    <h2 class="card-subtitle">Bonjour {{ username }} !</h2>
+    <p>Votre compte a été supprimé</p>
+{% endblock %}

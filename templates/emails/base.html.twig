@@ -1,0 +1,13 @@
+{% apply inline_css(source('@styles/email.css')) %}
+<section class="card-email">
+    <div class="container-email">
+        <header class="card-header">
+            <h1 class="card-title">SnowTricks</h1>
+        </header>
+
+        <div class="card-body">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</section>
+{% endapply %}
