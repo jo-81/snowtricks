@@ -36,7 +36,7 @@ class Trick
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     private ?User $author = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'tricks')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
@@ -210,5 +210,10 @@ class Trick
     public function setValueWhenUpdate(): void
     {
         $this->editedAt = new \DateTimeImmutable();
+    }
+
+    public function __toString()
+    {
+        return $this->title; /** @phpstan-ignore-line */
     }
 }
