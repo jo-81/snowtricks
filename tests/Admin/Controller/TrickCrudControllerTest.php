@@ -7,6 +7,7 @@ use App\Controller\Admin\TrickCrudController;
 use App\Tests\Traits\UserLoginTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Test\AbstractCrudTestCase;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
+use Symfony\Component\HttpFoundation\Response;
 
 class TrickCrudControllerTest extends AbstractCrudTestCase
 {
@@ -25,24 +26,50 @@ class TrickCrudControllerTest extends AbstractCrudTestCase
 
     /**
      * testAccessTricksWhenUserIsNotLogged.
-     *
-     * @dataProvider dataProviderPageWhenUserNotLogged
      */
-    public function testAccessTricksWhenUserIsNotLogged(string $page): void
+    public function testAccessTricksWhenUserIsNotLogged(): void
     {
-        $this->client->request('GET', $this->getCrudUrl($page));
+        $this->client->request('GET', $this->getCrudUrl('index'));
+
         static::assertResponseRedirects('/connexion');
     }
 
     /**
-     * dataProviderPageWhenUserNotLogged.
+     * testAccessSingleTrickWhenUserIsNotLogged.
      *
-     * @return array<int, array<int, string>>
+     * @return void
      */
-    public function dataProviderPageWhenUserNotLogged(): array
+    public function testAccessSingleTrickWhenUserIsNotLogged()
+    {
+        $this->client->request('GET', $this->getCrudUrl('detail', 1));
+
+        static::assertResponseRedirects('/connexion');
+    }
+
+    /**
+     * testAccessSingleTrickWhenUserIsLoggedWithAdminRole.
+     *
+     * @dataProvider dataProviderPageWhenUserLoggedRoleAdmin
+     *
+     * @return void
+     */
+    public function testAccessSingleTrickWhenUserIsLoggedWithAdminRole(string $page, int $statusCode)
+    {
+        $this->login($this->client, ['id' => '1']);
+        $this->client->request('GET', $this->getCrudUrl($page, 1));
+
+        static::assertResponseStatusCodeSame($statusCode);
+    }
+
+    /**
+     * dataProviderPageWhenUserLoggedRoleAdmin.
+     *
+     * @return array<mixed>
+     */
+    public function dataProviderPageWhenUserLoggedRoleAdmin(): array
     {
         return [
-            ['index'],
+            ['detail', Response::HTTP_OK],
         ];
     }
 }

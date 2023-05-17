@@ -111,4 +111,9 @@ class Category implements EntitySlugInterface
     {
         return 'name';
     }
+
+    public function __toString()
+    {
+        return $this->name; /* @phpstan-ignore-line */
+    }
 }
