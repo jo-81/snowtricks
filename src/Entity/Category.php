@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[UniqueEntity('name')]
 #[UniqueEntity('slug')]
-class Category
+class Category implements EntitySlugInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -105,5 +105,10 @@ class Category
         }
 
         return $this;
+    }
+
+    public function targetField(): string
+    {
+        return 'name';
     }
 }

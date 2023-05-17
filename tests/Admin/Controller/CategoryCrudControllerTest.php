@@ -80,6 +80,7 @@ class CategoryCrudControllerTest extends AbstractCrudTestCase
         return [
             ['detail'],
             ['new'],
+            ['edit'],
         ];
     }
 }
