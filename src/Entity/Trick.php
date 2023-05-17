@@ -214,6 +214,6 @@ class Trick
 
     public function __toString()
     {
-        return $this->title; /** @phpstan-ignore-line */
+        return $this->title; /* @phpstan-ignore-line */
     }
 }

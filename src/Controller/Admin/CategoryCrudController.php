@@ -43,13 +43,15 @@ class CategoryCrudController extends AbstractCrudController
     {
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
+
+            ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
         ;
     }
 
     public function configureFields(string $pageName): iterable
     {
         yield TextField::new('name', 'Nom');
-        yield SlugField::new('slug', 'Slug')->setTargetFieldName('name')->hideOnIndex();
+        yield SlugField::new('slug', 'Slug')->setTargetFieldName('name')->onlyOnDetail();
         yield TextareaField::new('content', 'Description');
 
         yield ArrayField::new('tricks', 'Figures')->onlyOnDetail();
