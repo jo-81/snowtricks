@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Blocked;
 use App\Entity\Category;
 use App\Entity\ResetPassword;
+use App\Entity\Trick;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -28,7 +29,8 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Snowtricks');
+            ->setTitle('Snowtricks')
+            ->renderContentMaximized();
     }
 
     public function configureMenuItems(): iterable
@@ -39,6 +41,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home')
             ->setPermission('ROLE_ADMIN');
 
+        /* Utilisateurs */
         yield MenuItem::section('Utilisateurs')->setPermission('ROLE_ADMIN');
         yield MenuItem::linkToCrud('Liste des utilisateurs', 'fa fa-users', User::class)
             ->setAction('index')
@@ -51,11 +54,21 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Demande de mot de passe', 'fa fa-at', ResetPassword::class)
             ->setAction('index')
             ->setPermission('ROLE_ADMIN');
+        /* Utilisateurs */
 
+        /* Figures */
+        yield MenuItem::section('Figures');
+        yield MenuItem::linkToCrud('Liste des figures', 'fa fa-person-snowboarding', Trick::class)
+            ->setAction('index')
+        ;
+        /* Figures */
+
+        /* Catégories */
         yield MenuItem::section('Catégories')->setPermission('ROLE_ADMIN');
         yield MenuItem::linkToCrud('Liste des catégories', 'fa fa-tags', Category::class)
             ->setAction('index')
             ->setPermission('ROLE_ADMIN');
+        /* Catégories */
 
         yield MenuItem::section();
 
