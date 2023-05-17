@@ -3,8 +3,10 @@
 namespace App\Tests\Traits;
 
 use App\Entity\ResetPassword;
+use App\Entity\Trick;
 use App\Entity\User;
 use App\Repository\ResetPasswordRepository;
+use App\Repository\TrickRepository;
 use App\Repository\UserRepository;
 
 trait EntityTrait
@@ -37,5 +39,20 @@ trait EntityTrait
         $resetPasswordRepository = static::getContainer()->get(ResetPasswordRepository::class);
 
         return $resetPasswordRepository->findOneBy($criteria);
+    }
+
+    /**
+     * getTrick.
+     *
+     * @param array<mixed> $criteria
+     *
+     * @return Trick
+     */
+    public function getTrick(array $criteria): ?Trick
+    {
+        /** @var TrickRepository $trickRepository */
+        $trickRepository = static::getContainer()->get(TrickRepository::class);
+
+        return $trickRepository->findOneBy($criteria);
     }
 }

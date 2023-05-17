@@ -18,6 +18,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class TrickCrudController extends AbstractCrudController
@@ -78,6 +79,8 @@ class TrickCrudController extends AbstractCrudController
     {
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
+
+            ->setPermission(Crud::PAGE_DETAIL, 'TRICK_SHOW')
         ;
     }
 
@@ -88,6 +91,8 @@ class TrickCrudController extends AbstractCrudController
         yield DateTimeField::new('createdAt', 'Crée le')->hideOnForm();
         yield BooleanField::new('valided', 'Valider')->hideWhenCreating()->setPermission('ROLE_ADMIN');
         yield BooleanField::new('published', 'Publié');
-        yield AssociationField::new('author', 'Auteur')->hideOnForm();
+        yield AssociationField::new('author', 'Auteur')->hideOnForm()->setPermission('ROLE_ADMIN');
+        yield AssociationField::new('category', 'Catégorie')->hideOnIndex();
+        yield TextEditorField::new('content')->hideOnIndex();
     }
 }
