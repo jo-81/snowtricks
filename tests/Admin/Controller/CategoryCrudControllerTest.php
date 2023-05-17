@@ -34,6 +34,9 @@ class CategoryCrudControllerTest extends AbstractCrudTestCase
         $this->client->request('GET', $this->getCrudUrl('index'));
         static::assertResponseRedirects('/connexion');
 
+        $this->client->request('GET', $this->getCrudUrl('delete'));
+        static::assertResponseRedirects('/connexion');
+
         $this->client->request('GET', $this->getCrudUrl($page, '1'));
         static::assertResponseRedirects('/connexion');
     }
@@ -50,6 +53,9 @@ class CategoryCrudControllerTest extends AbstractCrudTestCase
         $this->client->request('GET', $this->getCrudUrl('index'));
         static::assertResponseIsSuccessful();
 
+        $this->client->request('GET', $this->getCrudUrl('delete'));
+        static::assertResponseRedirects();
+
         $this->client->request('GET', $this->getCrudUrl($page, '1'));
         static::assertResponseIsSuccessful();
     }
@@ -64,6 +70,9 @@ class CategoryCrudControllerTest extends AbstractCrudTestCase
         $this->login($this->client, ['id' => '2']);
 
         $this->client->request('GET', $this->getCrudUrl('index'));
+        static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+
+        $this->client->request('GET', $this->getCrudUrl('delete'));
         static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
 
         $this->client->request('GET', $this->getCrudUrl($page, '1'));

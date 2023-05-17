@@ -26,7 +26,7 @@ class UpdatePasswordAdminEvent implements EventSubscriberInterface
 
         if ($user instanceof User) {
             if (!is_null($user->getplainPassword())) {
-                $passwordHashed = $this->hasher->hashPassword($user, $user->getPlainPassword()); /** @phpstan-ignore-line */
+                $passwordHashed = $this->hasher->hashPassword($user, $user->getPlainPassword()); /* @phpstan-ignore-line */
                 $user->setPassword($passwordHashed);
             }
         }
