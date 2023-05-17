@@ -37,6 +37,7 @@ class UserCrudController extends AbstractCrudController
         return parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters)
             ->andWhere('entity.roles NOT LIKE :role')
             ->setParameter('role', '%ROLE_ADMIN%')
+            ->orderby('entity.id', 'DESC')
         ;
     }
 
