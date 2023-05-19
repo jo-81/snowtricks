@@ -13,8 +13,24 @@ class Video extends Media
     #[ORM\Column]
     protected ?int $id = null;
 
+    #[ORM\ManyToOne(inversedBy: 'videos')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    private ?Trick $trick = null;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getTrick(): ?Trick
+    {
+        return $this->trick;
+    }
+
+    public function setTrick(?Trick $trick): self
+    {
+        $this->trick = $trick;
+
+        return $this;
     }
 }
