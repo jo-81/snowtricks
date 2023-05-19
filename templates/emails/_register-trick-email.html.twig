@@ -1,0 +1,7 @@
+{% extends 'emails/base.html.twig' %}
+    
+{% block content %}
+    <h2 class="card-subtitle">Bonjour</h2>
+    <p>L'utilisateur {{ username }} a rédigé du contenue</p>
+    <p>Pour le consulter : <a href="{{ path }}">lien</a>.</p>
+{% endblock %}

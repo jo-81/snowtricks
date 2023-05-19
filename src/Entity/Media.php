@@ -28,9 +28,6 @@ abstract class Media
     #[ORM\Column(length: 255, unique: true)]
     protected ?string $path = null;
 
-    #[ORM\ManyToOne(inversedBy: 'gallery')]
-    private ?Trick $trick = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -48,15 +45,28 @@ abstract class Media
         return $this;
     }
 
-    public function getTrick(): ?Trick
+    public function __toString()
     {
-        return $this->trick;
+        return is_null($this->path) ? '' : $this->path;
     }
 
-    public function setTrick(?Trick $trick): self
+    public function __serialize()
     {
-        $this->trick = $trick;
+        return [
+            $this->id,
+            $this->path,
+        ];
+    }
 
-        return $this;
+    /**
+     * __unserialize.
+     *
+     * @param array<mixed> $serialized
+     *
+     * @return void
+     */
+    public function __unserialize(array $serialized)
+    {
+        list($this->id, $this->path) = unserialize(serialize($serialized)); /* @phpstan-ignore-line */
     }
 }

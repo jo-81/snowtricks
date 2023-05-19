@@ -8,6 +8,9 @@ use Symfony\Component\Mailer\MailerInterface;
 
 class EmailService
 {
+    protected mixed $options = null;
+    protected ?string $emailTo = null;
+
     public function __construct(
         private MailerInterface $mailer,
     ) {
@@ -20,9 +23,26 @@ class EmailService
 
     protected function builderEmail(User $user): TemplatedEmail
     {
+        /** @var string $emailTo */
+        $emailTo = null == $this->emailTo ? $user->getEmail() : $this->emailTo;
+
         return (new TemplatedEmail())
             ->from('snowtricks@domaine.fr')
-            ->to($user->getEmail()) /* @phpstan-ignore-line */
+            ->to($emailTo)
         ;
+    }
+
+    public function getOptions(mixed $options = null): self
+    {
+        $this->options = $options;
+
+        return $this;
+    }
+
+    public function sendToEmail(string $email): self
+    {
+        $this->emailTo = $email;
+
+        return $this;
     }
 }

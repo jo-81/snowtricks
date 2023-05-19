@@ -31,9 +31,23 @@ class Image extends Media
     #[Vich\UploadableField(mapping: 'avatar', fileNameProperty: 'path')]
     private ?File $imageFile = null;
 
+    #[Assert\Image(
+        maxWidth: 650,
+    )]
+    #[Assert\File(
+        extensions: ['png', 'jpg', 'jpeg'],
+        extensionsMessage: "Le type de l'image n'est pas valide. Seulement les types .png, .jpg et .jpeg sont autorisés."
+    )]
+    #[Vich\UploadableField(mapping: 'trick', fileNameProperty: 'path')]
+    private ?File $trickFile = null;
+
     #[ORM\Column(nullable: true)]
     /** @phpstan-ignore-next-line */
     private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\ManyToOne(inversedBy: 'images')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    private ?Trick $trick = null;
 
     public function getId(): ?int
     {
@@ -61,33 +75,34 @@ class Image extends Media
         }
     }
 
+    public function setTrickFile(?File $trickFile = null): void
+    {
+        $this->trickFile = $trickFile;
+
+        if (null !== $trickFile) {
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getTrickFile(): ?File
+    {
+        return $this->trickFile;
+    }
+
     public function getImageFile(): ?File
     {
         return $this->imageFile;
     }
 
-    public function __toString()
+    public function getTrick(): ?Trick
     {
-        return $this->path; /* @phpstan-ignore-line */
+        return $this->trick;
     }
 
-    public function __serialize()
+    public function setTrick(?Trick $trick): self
     {
-        return [
-            $this->id,
-            $this->path,
-        ];
-    }
+        $this->trick = $trick;
 
-    /**
-     * __unserialize.
-     *
-     * @param array<mixed> $serialized
-     *
-     * @return void
-     */
-    public function __unserialize(array $serialized)
-    {
-        list($this->id, $this->path) = unserialize(serialize($serialized)); /* @phpstan-ignore-line */
+        return $this;
     }
 }
