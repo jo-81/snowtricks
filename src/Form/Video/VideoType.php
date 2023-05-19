@@ -14,7 +14,8 @@ class VideoType extends AbstractType
     {
         $builder
             ->add('path', TextType::class, [
-                'label' => 'Url de la vidéo',
+                'label' => 'Vidéo',
+                'help' => "Ajoute l'iframe du lien partager",
             ])
         ;
     }
