@@ -8,13 +8,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class CommentVoter extends Voter
 {
-    public const INDEX_USER = 'COMMENT_INDEX_USER';
+    public const SHOW = 'COMMENT_SHOW';
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return in_array($attribute, [self::INDEX_USER]) && $subject instanceof \App\Entity\Comment;
+        return in_array($attribute, [self::SHOW]) && $subject instanceof \App\Entity\Comment;
     }
-
+    
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
@@ -25,7 +25,10 @@ class CommentVoter extends Voter
 
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
-            case self::INDEX_USER:
+            case self::SHOW:
+                if (in_array('ROLE_ADMIN', $user->getRoles()) || $user === $subject->getAuthor()) { /** @phpstan-ignore-line */
+                    return true;
+                }
                 break;
         }
 

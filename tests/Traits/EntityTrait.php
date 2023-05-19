@@ -2,9 +2,11 @@
 
 namespace App\Tests\Traits;
 
+use App\Entity\Comment;
 use App\Entity\ResetPassword;
 use App\Entity\Trick;
 use App\Entity\User;
+use App\Repository\CommentRepository;
 use App\Repository\ResetPasswordRepository;
 use App\Repository\TrickRepository;
 use App\Repository\UserRepository;
@@ -54,5 +56,20 @@ trait EntityTrait
         $trickRepository = static::getContainer()->get(TrickRepository::class);
 
         return $trickRepository->findOneBy($criteria);
+    }
+
+    /**
+     * getComment.
+     *
+     * @param array<mixed> $criteria
+     *
+     * @return Comment|null
+     */
+    public function getComment(array $criteria): ?Comment
+    {
+        /** @var CommentRepository $commentRepository */
+        $commentRepository = static::getContainer()->get(CommentRepository::class);
+
+        return $commentRepository->findOneBy($criteria);
     }
 }

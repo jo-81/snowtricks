@@ -48,7 +48,10 @@ class CommentCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        yield TextareaField::new('content', 'Commentaire');
+        yield TextareaField::new('content', 'Commentaire')
+            ->renderAsHtml()
+            ->stripTags()
+        ;
 
         yield DateTimeField::new('createdAt', 'Posté le')
             ->hideOnForm()
@@ -56,6 +59,7 @@ class CommentCrudController extends AbstractCrudController
 
         yield DateTimeField::new('editedAt', 'Modifié le')
             ->onlyOnDetail()
+            ->setPermission('ROLE_ADMIN')
         ;
 
         yield AssociationField::new('author', 'Auteur')
@@ -85,6 +89,7 @@ class CommentCrudController extends AbstractCrudController
 
         return $crud
             ->setPageTitle(CRUD::PAGE_INDEX, $titleIndex)
+            ->setPageTitle(CRUD::PAGE_DETAIL, 'Commentaire')
             ->setEntityLabelInSingular('commentaire')
             ->setEntityLabelInPlural('commentaires')
         ;
@@ -109,6 +114,8 @@ class CommentCrudController extends AbstractCrudController
         return $actions
             ->remove(Crud::PAGE_INDEX, Action::NEW)
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
+
+            ->setPermission(Crud::PAGE_DETAIL, 'COMMENT_SHOW')
         ;
     }
 }
