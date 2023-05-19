@@ -37,11 +37,13 @@ class TrickCrudControllerTest extends AbstractCrudTestCase
     /**
      * testAccessSingleTrickWhenUserIsNotLogged.
      *
+     * @dataProvider dataProviderPageWhenUserNotLogged
+     *
      * @return void
      */
-    public function testAccessSingleTrickWhenUserIsNotLogged()
+    public function testAccessSingleTrickWhenUserIsNotLogged(string $page)
     {
-        $this->client->request('GET', $this->getCrudUrl('detail', 1));
+        $this->client->request('GET', $this->getCrudUrl($page, 1));
 
         static::assertResponseRedirects('/connexion');
     }
@@ -70,6 +72,20 @@ class TrickCrudControllerTest extends AbstractCrudTestCase
     {
         return [
             ['detail', Response::HTTP_OK],
+            ['edit', Response::HTTP_OK],
+        ];
+    }
+
+    /**
+     * dataProviderPageWhenUserNotLogged.
+     *
+     * @return array<mixed>
+     */
+    public function dataProviderPageWhenUserNotLogged(): array
+    {
+        return [
+            ['detail'],
+            ['edit'],
         ];
     }
 }

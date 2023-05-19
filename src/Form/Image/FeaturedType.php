@@ -7,7 +7,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Image as ImageConstraint;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class FeaturedType extends AbstractType
@@ -18,12 +17,7 @@ class FeaturedType extends AbstractType
             ->add('trickFile', VichImageType::class, [
                 'attr' => ['required' => false],
                 'label' => 'Image',
-                // 'allow_delete' => false,
-                // 'constraints' => [
-                //     new ImageConstraint(
-                //         minWidth: 650
-                //     )
-                // ]
+                'allow_delete' => false,
             ])
             ->add('alt', TextType::class, [
                 'label' => 'Text alternatif',

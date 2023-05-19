@@ -56,7 +56,7 @@ class Trick implements EntitySlugInterface
     #[Assert\Valid]
     #[Assert\Count(
         min: 1,
-        max: 3,
+        max: 4,
         minMessage: 'Vous devez ajouter au moins {{ limit }} image.',
         maxMessage: 'Vous ne pouvez pas ajouter plus de {{ limit }} images.'
     )]

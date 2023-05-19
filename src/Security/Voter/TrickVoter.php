@@ -11,10 +11,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class TrickVoter extends Voter
 {
     public const SHOW = 'TRICK_SHOW';
+    public const EDIT = 'TRICK_EDIT';
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return in_array($attribute, [self::SHOW]) && $subject instanceof \App\Entity\Trick;
+        return in_array($attribute, [self::SHOW, self::EDIT]) && $subject instanceof \App\Entity\Trick;
     }
 
     /**
@@ -32,6 +33,12 @@ class TrickVoter extends Voter
 
         switch ($attribute) {
             case self::SHOW:
+                if (in_array('ROLE_ADMIN', $user->getRoles()) || $user === $subject->getAuthor()) {
+                    return true;
+                }
+                break;
+
+            case self::EDIT:
                 if (in_array('ROLE_ADMIN', $user->getRoles()) || $user === $subject->getAuthor()) {
                     return true;
                 }

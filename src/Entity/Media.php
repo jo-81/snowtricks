@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\MediaRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\DiscriminatorColumn;
 use Doctrine\ORM\Mapping\InheritanceType;
@@ -25,7 +26,7 @@ abstract class Media
     #[ORM\Column]
     protected ?int $id = null;
 
-    #[ORM\Column(length: 255, unique: true)]
+    #[ORM\Column(type: Types::TEXT)]
     protected ?string $path = null;
 
     public function getId(): ?int
