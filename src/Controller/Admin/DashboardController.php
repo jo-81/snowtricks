@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Blocked;
 use App\Entity\Category;
+use App\Entity\Comment;
 use App\Entity\ResetPassword;
 use App\Entity\Trick;
 use App\Entity\User;
@@ -58,8 +59,9 @@ class DashboardController extends AbstractDashboardController
         /* Utilisateurs */
 
         /* Figures */
+        $titleIndexTrick = in_array('ROLE_ADMIN', $user->getRoles()) ? 'Liste des figures' : 'Mes rédactions';
         yield MenuItem::section('Figures');
-        yield MenuItem::linkToCrud('Liste des figures', 'fa fa-person-snowboarding', Trick::class)
+        yield MenuItem::linkToCrud($titleIndexTrick, 'fa fa-person-snowboarding', Trick::class)
             ->setAction('index')
         ;
         /* Figures */
@@ -70,6 +72,14 @@ class DashboardController extends AbstractDashboardController
             ->setAction('index')
             ->setPermission('ROLE_ADMIN');
         /* Catégories */
+
+        /* Commentaires */
+        $titleIndexComment = in_array('ROLE_ADMIN', $user->getRoles()) ? 'Liste des commentaires' : 'Mes commentaires';
+        yield MenuItem::section('Commentaires');
+        yield MenuItem::linkToCrud($titleIndexComment, 'fa fa-comments', Comment::class)
+            ->setAction('index')
+        ;
+        /* Commentaires */
 
         yield MenuItem::section();
 
