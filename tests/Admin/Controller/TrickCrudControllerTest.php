@@ -2,14 +2,14 @@
 
 namespace App\Tests\Admin\Controller;
 
+use App\Controller\Admin\DashboardController;
+use App\Controller\Admin\TrickCrudController;
 use App\Entity\Trick;
 use App\Tests\Traits\EntityTrait;
 use App\Tests\Traits\UserLoginTrait;
-use App\Controller\Admin\DashboardController;
-use App\Controller\Admin\TrickCrudController;
-use Symfony\Component\HttpFoundation\Response;
-use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Test\AbstractCrudTestCase;
+use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
+use Symfony\Component\HttpFoundation\Response;
 
 class TrickCrudControllerTest extends AbstractCrudTestCase
 {
