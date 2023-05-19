@@ -38,8 +38,9 @@ class DashboardController extends AbstractDashboardController
         /** @var User $user */
         $user = $this->getUser();
 
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home')
-            ->setPermission('ROLE_ADMIN');
+        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home')->setPermission('ROLE_ADMIN');
+
+        yield MenuItem::linkToUrl('Retour vers le site', 'fa fa-reply-all', '/');
 
         /* Utilisateurs */
         yield MenuItem::section('Utilisateurs')->setPermission('ROLE_ADMIN');

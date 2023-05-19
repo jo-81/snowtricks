@@ -92,6 +92,7 @@ class TrickCrudController extends AbstractCrudController
 
             ->setPermission(Crud::PAGE_DETAIL, 'TRICK_SHOW')
             ->setPermission(Crud::PAGE_EDIT, 'TRICK_EDIT')
+            ->setPermission(Action::DELETE, 'TRICK_DELETE')
         ;
     }
 

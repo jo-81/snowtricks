@@ -2,17 +2,20 @@
 
 namespace App\Tests\Admin\Controller;
 
+use App\Entity\Trick;
+use App\Tests\Traits\EntityTrait;
+use App\Tests\Traits\UserLoginTrait;
 use App\Controller\Admin\DashboardController;
 use App\Controller\Admin\TrickCrudController;
-use App\Tests\Traits\UserLoginTrait;
-use EasyCorp\Bundle\EasyAdminBundle\Test\AbstractCrudTestCase;
-use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 use Symfony\Component\HttpFoundation\Response;
+use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
+use EasyCorp\Bundle\EasyAdminBundle\Test\AbstractCrudTestCase;
 
 class TrickCrudControllerTest extends AbstractCrudTestCase
 {
     use UserLoginTrait;
     use ReloadDatabaseTrait;
+    use EntityTrait;
 
     protected function getControllerFqcn(): string
     {
@@ -86,6 +89,36 @@ class TrickCrudControllerTest extends AbstractCrudTestCase
         return [
             ['detail'],
             ['edit'],
+            ['delete'],
         ];
+    }
+
+    public function testAccessRouteWithUserLoggedRoleUser(): void
+    {
+        // Appartient à l'auteur
+        $user = $this->login($this->client, ['id' => '2']);
+
+        /** @var Trick $trick */
+        $trick = $this->getTrick(['author' => $user]);
+
+        $this->client->request('GET', $this->getCrudUrl('edit', $trick->getId()));
+        static::assertResponseStatusCodeSame(Response::HTTP_OK);
+
+        $this->client->request('GET', $this->getCrudUrl('delete', $trick->getId()));
+        static::assertResponseRedirects();
+
+        $this->client->request('GET', $this->getCrudUrl('detail', $trick->getId()));
+        static::assertResponseStatusCodeSame(Response::HTTP_OK);
+
+        // N'appartient pas à l'auteur
+        $this->login($this->client, ['id' => '3']);
+        $this->client->request('GET', $this->getCrudUrl('edit', $trick->getId()));
+        static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+
+        $this->client->request('GET', $this->getCrudUrl('delete', $trick->getId()));
+        static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+
+        $this->client->request('GET', $this->getCrudUrl('detail', $trick->getId()));
+        static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
     }
 }
