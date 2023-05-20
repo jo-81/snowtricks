@@ -9,24 +9,29 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class CommentVoter extends Voter
 {
     public const SHOW = 'COMMENT_SHOW';
+    public const EDIT = 'COMMENT_EDIT';
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return in_array($attribute, [self::SHOW]) && $subject instanceof \App\Entity\Comment;
+        return in_array($attribute, [self::SHOW, self::EDIT]) && $subject instanceof \App\Entity\Comment;
     }
-    
+
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
-        // if the user is anonymous, do not grant access
         if (!$user instanceof UserInterface) {
             return false;
         }
 
-        // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case self::SHOW:
-                if (in_array('ROLE_ADMIN', $user->getRoles()) || $user === $subject->getAuthor()) { /** @phpstan-ignore-line */
+                if (in_array('ROLE_ADMIN', $user->getRoles()) || $user === $subject->getAuthor()) { /* @phpstan-ignore-line */
+                    return true;
+                }
+                break;
+
+            case self::EDIT:
+                if (in_array('ROLE_ADMIN', $user->getRoles()) || $user === $subject->getAuthor()) { /* @phpstan-ignore-line */
                     return true;
                 }
                 break;
