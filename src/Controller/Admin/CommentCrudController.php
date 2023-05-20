@@ -130,6 +130,10 @@ class CommentCrudController extends AbstractCrudController
 
             ->setPermission(Crud::PAGE_DETAIL, 'COMMENT_SHOW')
             ->setPermission(Crud::PAGE_EDIT, 'COMMENT_EDIT')
+
+            ->setPermission(Action::DELETE, 'COMMENT_DELETE')
+            ->setPermission(Action::EDIT, 'COMMENT_EDIT')
+            ->setPermission(Action::DETAIL, 'COMMENT_SHOW')
         ;
     }
 }
