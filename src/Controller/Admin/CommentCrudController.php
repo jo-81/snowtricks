@@ -17,7 +17,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 
 class CommentCrudController extends AbstractCrudController
 {
@@ -51,6 +53,12 @@ class CommentCrudController extends AbstractCrudController
         yield TextareaField::new('content', 'Commentaire')
             ->renderAsHtml()
             ->stripTags()
+            ->hideOnForm()
+        ;
+
+        yield TextEditorField::new('content', 'Description')
+            ->onlyWhenUpdating()
+            ->setColumns('col-12 col-xl-6')
         ;
 
         yield DateTimeField::new('createdAt', 'Posté le')
@@ -72,12 +80,15 @@ class CommentCrudController extends AbstractCrudController
             ->setPermission('ROLE_ADMIN')
         ;
 
+        yield FormField::addRow();
         yield BooleanField::new('signaled', 'Signalé')
             ->setPermission('ROLE_ADMIN')
+            ->setColumns('col-12 col-sm-6 col-md-4 col-lg-3')
         ;
 
         yield BooleanField::new('blocked', 'Bloqué')
             ->setPermission('ROLE_ADMIN')
+            ->setColumns('col-12 col-sm-6 col-md-4 col-lg-3')
         ;
     }
 
@@ -113,9 +124,12 @@ class CommentCrudController extends AbstractCrudController
     {
         return $actions
             ->remove(Crud::PAGE_INDEX, Action::NEW)
+            ->remove(Crud::PAGE_EDIT, Action::SAVE_AND_CONTINUE)
+
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
 
             ->setPermission(Crud::PAGE_DETAIL, 'COMMENT_SHOW')
+            ->setPermission(Crud::PAGE_EDIT, 'COMMENT_EDIT')
         ;
     }
 }

@@ -62,8 +62,6 @@ trait EntityTrait
      * getComment.
      *
      * @param array<mixed> $criteria
-     *
-     * @return Comment|null
      */
     public function getComment(array $criteria): ?Comment
     {

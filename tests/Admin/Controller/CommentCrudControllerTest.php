@@ -4,7 +4,6 @@ namespace App\Tests\Admin\Controller;
 
 use App\Controller\Admin\CommentCrudController;
 use App\Controller\Admin\DashboardController;
-use App\Entity\Comment;
 use App\Tests\Traits\EntityTrait;
 use App\Tests\Traits\UserLoginTrait;
 use EasyCorp\Bundle\EasyAdminBundle\Test\AbstractCrudTestCase;
@@ -46,7 +45,7 @@ class CommentCrudControllerTest extends AbstractCrudTestCase
         $user = $this->login($this->client, ['id' => '1']);
 
         $comment = $this->getComment(['author' => $user]);
-        if (! is_null($comment)) {
+        if (!is_null($comment)) {
             $this->client->request('GET', $this->getCrudUrl('detail', $comment->getId()));
             static::assertResponseIsSuccessful();
         }
@@ -58,15 +57,21 @@ class CommentCrudControllerTest extends AbstractCrudTestCase
         $ownComment = $this->getComment(['author' => $user]);
         $otherComment = $this->getComment(['author' => $this->getUser(['id' => 3])]);
 
-        if (! is_null($ownComment)) {
+        if (!is_null($ownComment)) {
             // Appartenant à l'utilisateur connecté
             $this->client->request('GET', $this->getCrudUrl('detail', $ownComment->getId()));
             static::assertResponseIsSuccessful();
+
+            $this->client->request('GET', $this->getCrudUrl('edit', $ownComment->getId()));
+            static::assertResponseIsSuccessful();
         }
 
-        if (! is_null($otherComment)) {
+        if (!is_null($otherComment)) {
             // N'appartenant pas à l'utilisateur connecté
             $this->client->request('GET', $this->getCrudUrl('detail', $otherComment->getId()));
+            static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+
+            $this->client->request('GET', $this->getCrudUrl('edit', $otherComment->getId()));
             static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
         }
     }
