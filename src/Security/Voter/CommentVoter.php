@@ -10,10 +10,11 @@ class CommentVoter extends Voter
 {
     public const SHOW = 'COMMENT_SHOW';
     public const EDIT = 'COMMENT_EDIT';
+    public const DELETE = 'COMMENT_DELETE';
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        return in_array($attribute, [self::SHOW, self::EDIT]) && $subject instanceof \App\Entity\Comment;
+        return in_array($attribute, [self::SHOW, self::EDIT, self::DELETE]) && $subject instanceof \App\Entity\Comment;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
@@ -31,6 +32,12 @@ class CommentVoter extends Voter
                 break;
 
             case self::EDIT:
+                if (in_array('ROLE_ADMIN', $user->getRoles()) || $user === $subject->getAuthor()) { /* @phpstan-ignore-line */
+                    return true;
+                }
+                break;
+
+            case self::DELETE:
                 if (in_array('ROLE_ADMIN', $user->getRoles()) || $user === $subject->getAuthor()) { /* @phpstan-ignore-line */
                     return true;
                 }

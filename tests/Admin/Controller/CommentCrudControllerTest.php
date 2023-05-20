@@ -62,6 +62,9 @@ class CommentCrudControllerTest extends AbstractCrudTestCase
             $this->client->request('GET', $this->getCrudUrl('detail', $ownComment->getId()));
             static::assertResponseIsSuccessful();
 
+            $this->client->request('GET', $this->getCrudUrl('delete', $ownComment->getId()));
+            static::assertResponseRedirects();
+
             $this->client->request('GET', $this->getCrudUrl('edit', $ownComment->getId()));
             static::assertResponseIsSuccessful();
         }
@@ -69,6 +72,9 @@ class CommentCrudControllerTest extends AbstractCrudTestCase
         if (!is_null($otherComment)) {
             // N'appartenant pas à l'utilisateur connecté
             $this->client->request('GET', $this->getCrudUrl('detail', $otherComment->getId()));
+            static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+
+            $this->client->request('GET', $this->getCrudUrl('delete', $otherComment->getId()));
             static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
 
             $this->client->request('GET', $this->getCrudUrl('edit', $otherComment->getId()));
