@@ -20,6 +20,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class CommentCrudController extends AbstractCrudController
 {
@@ -80,16 +81,9 @@ class CommentCrudController extends AbstractCrudController
             ->setPermission('ROLE_ADMIN')
         ;
 
-        yield FormField::addRow();
-        yield BooleanField::new('signaled', 'Signalé')
-            ->setPermission('ROLE_ADMIN')
-            ->setColumns('col-12 col-sm-6 col-md-4 col-lg-3')
-        ;
-
-        yield BooleanField::new('blocked', 'Bloqué')
-            ->setPermission('ROLE_ADMIN')
-            ->setColumns('col-12 col-sm-6 col-md-4 col-lg-3')
-        ;
+        yield FormField::addPanel()->onlyOnDetail()->setPermission('ROLE_ADMIN');
+        yield BooleanField::new('commentSignaled.valided', 'Bloqué ?')->onlyOnDetail()->setPermission('ROLE_ADMIN');
+        yield TextField::new('commentSignaled.reason', 'Raison')->onlyOnDetail()->setPermission('ROLE_ADMIN');
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -113,8 +107,6 @@ class CommentCrudController extends AbstractCrudController
         if (in_array('ROLE_ADMIN', $user->getRoles())) {
             $filters->add('author');
             $filters->add('trick');
-            $filters->add('signaled');
-            $filters->add('blocked');
         }
 
         return $filters;

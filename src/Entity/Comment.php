@@ -32,14 +32,8 @@ class Comment
     #[ORM\Column]
     private ?\DateTimeImmutable $editedAt = null;
 
-    #[ORM\Column]
-    private ?bool $signaled = null;
-
-    #[ORM\Column]
-    private ?bool $blocked = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $reason = null;
+    #[ORM\OneToOne(mappedBy: 'comment', cascade: ['remove'])]
+    private ?CommentSignaled $commentSignaled = null;
 
     public function getId(): ?int
     {
@@ -106,54 +100,38 @@ class Comment
         return $this;
     }
 
-    public function isSignaled(): ?bool
-    {
-        return $this->signaled;
-    }
-
-    public function setSignaled(bool $signaled): self
-    {
-        $this->signaled = $signaled;
-
-        return $this;
-    }
-
-    public function isBlocked(): ?bool
-    {
-        return $this->blocked;
-    }
-
-    public function setBlocked(bool $blocked): self
-    {
-        $this->blocked = $blocked;
-
-        return $this;
-    }
-
-    public function getReason(): ?string
-    {
-        return $this->reason;
-    }
-
-    public function setReason(string $reason): self
-    {
-        $this->reason = $reason;
-
-        return $this;
-    }
-
     #[ORM\PrePersist]
     public function setValueWhenPersist(): void
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->editedAt = new \DateTimeImmutable();
-        $this->signaled = false;
-        $this->blocked = false;
     }
 
     #[ORM\PreUpdate]
     public function setValueWhenUpdate(): void
     {
         $this->editedAt = new \DateTimeImmutable();
+    }
+
+    public function getCommentSignaled(): ?CommentSignaled
+    {
+        return $this->commentSignaled;
+    }
+
+    public function setCommentSignaled(CommentSignaled $commentSignaled): self
+    {
+        // set the owning side of the relation if necessary
+        if ($commentSignaled->getComment() !== $this) {
+            $commentSignaled->setComment($this);
+        }
+
+        $this->commentSignaled = $commentSignaled;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->content ?? '';
     }
 }

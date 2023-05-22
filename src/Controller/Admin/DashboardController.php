@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Blocked;
 use App\Entity\Category;
 use App\Entity\Comment;
+use App\Entity\CommentSignaled;
 use App\Entity\ResetPassword;
 use App\Entity\Trick;
 use App\Entity\User;
@@ -78,6 +79,10 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::section('Commentaires');
         yield MenuItem::linkToCrud($titleIndexComment, 'fa fa-comments', Comment::class)
             ->setAction('index')
+        ;
+        yield MenuItem::linkToCrud('Commentaires signalés', 'fa fa-triangle-exclamation', CommentSignaled::class)
+            ->setAction('index')
+            ->setPermission('ROLE_ADMIN')
         ;
         /* Commentaires */
 
