@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\CommentSignaled;
 use App\Entity\Trick;
+use App\Form\Comment\CommentSignaledType;
 use App\Repository\TrickRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,9 +24,13 @@ class TrickController extends AbstractController
         /* @phpstan-ignore-next-line */
         $tricksSameCategory = $trickRepository->findByCategory($trick->getCategory(), $trick->getId());
 
+        $commentSignaled = new CommentSignaled();
+        $form = $this->createForm(CommentSignaledType::class, $commentSignaled);
+
         return $this->render('trick/show.html.twig', [
             'trick' => $trick,
             'tricksSameCategory' => $tricksSameCategory,
+            'form' => $form,
         ]);
     }
 }

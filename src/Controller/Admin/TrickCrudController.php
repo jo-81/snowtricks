@@ -154,8 +154,10 @@ class TrickCrudController extends AbstractCrudController
         ;
 
         yield FormField::addPanel()->onlyOnForms();
-
-        yield TextEditorField::new('content', 'Description')->onlyOnForms()->setColumns('col-12 col-xl-6');
+        yield TextEditorField::new('content', 'Description')
+            ->onlyOnForms()
+            ->setColumns('col-12 col-xl-6')
+        ;
         yield TextareaField::new('content', 'Description')
             ->onlyOnDetail()
             ->setColumns('col-12 col-xl-6')
