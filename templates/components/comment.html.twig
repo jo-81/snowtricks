@@ -1,8 +1,17 @@
 <div{{ attributes.defaults({ class: 'mt-5' }) }}>
 
-    <header class="mb-4">
+    <header id="comments" class="mb-4">
         <h4 class="h5 fw-bold">{{ plurial(this.count, 'Commentaire', 'Commentaires') }} ({{ this.count }})</h4>
     </header>
+
+    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+    <section class="bg-light p-3 mb-4 fw-bold">
+        <p>Pour ajouter un commentaire, vous devez être connecté</p>
+        <p class="mb-0">
+            <a class="btn btn-action scale" href="{{ path('app_login') }}">Connexion</a>
+        </p>
+    </section>
+    {% endif %}
 
     <div class="row g-5 mb-4">
         {% for comment in this.comments %}
@@ -14,14 +23,45 @@
 
     {% if this.showButton %}
     <button class="btn btn-outline-primary scale"
-            data-action-name="increment()"
+            data-action-name="increment"
             data-action="live#action">Plus de commentaires
             
-        <div    data-loading 
+        <div    data-loading="action(increment)|show"
                 class="ms-3 spinner-border spinner-border-sm" 
                 role="status">
             <span class="visually-hidden">Loading</span>
         </div>
     </button>
+    {% endif %}
+
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <div class="mt-4">
+            {{ form_start(form, {
+                attr: {
+                    'data-action': 'live#action',
+                    'data-action-name': 'prevent|addComment'
+                }
+            }) }}
+
+            {{ form_row(form.content) }}
+
+            <button class="btn btn-primary scale">Poster
+                <div    data-loading="action(addComment)|show"
+                        class="ms-3 spinner-border spinner-border-sm" 
+                        role="status">
+                    <span class="visually-hidden">Loading</span>
+                </div>
+            </button>
+
+            {{ form_end(form) }}
+        </div>
+
+        {% if this.isPersist %}
+            {{ component('toast', {
+                'message': 'Votre commentaire a bien été ajouté',
+                'type': 'success',
+                'show': true,
+            }) }}
+        {% endif %}
     {% endif %}
 </div>
