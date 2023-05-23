@@ -3,7 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Comment;
+use App\Entity\Trick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,28 +42,20 @@ class CommentRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Comment[] Returns an array of Comment objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    // public function findCommentByTrickValided(Trick $trick, int $number)
+    // {
+    //     $query = $this->createQueryBuilder('c')
+    //         ->andWhere('c.trick = :trick')
+    //         ->setParameter('trick', $trick)
+    //         ->orderBy('c.id', 'DESC')
+    //         ->join(join: 'App\Entity\CommentSignaled', alias: 'cs', conditionType: Expr\Join::WITH, condition: 'c.id <> cs.comment')
+    //         ->setFirstResult(0)
+    //         ->setMaxResults($number)
+    //         ->getQuery()
+    //     ;
 
-//    public function findOneBySomeField($value): ?Comment
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //     $paginator = new Paginator($query, true);
+
+    //     return $paginator;
+    // }
 }

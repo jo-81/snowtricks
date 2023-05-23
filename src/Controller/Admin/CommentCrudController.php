@@ -82,8 +82,8 @@ class CommentCrudController extends AbstractCrudController
         ;
 
         yield FormField::addPanel()->onlyOnDetail()->setPermission('ROLE_ADMIN');
-        yield BooleanField::new('commentSignaled.valided', 'Bloqué ?')->onlyOnDetail()->setPermission('ROLE_ADMIN');
-        yield TextField::new('commentSignaled.reason', 'Raison')->onlyOnDetail()->setPermission('ROLE_ADMIN');
+        yield BooleanField::new('commentSignaled.valided', 'Bloqué ?')->onlyOnDetail();
+        yield TextField::new('commentSignaled.reason', 'Raison')->onlyOnDetail();
     }
 
     public function configureCrud(Crud $crud): Crud

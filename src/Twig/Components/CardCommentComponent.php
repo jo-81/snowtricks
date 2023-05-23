@@ -33,6 +33,16 @@ final class CardCommentComponent extends AbstractController
 
     public bool $isPersist = false;
 
+    public function getValided(): bool
+    {
+        $commentSignaled = $this->commentSignaledRepository->findOneBy(['comment' => $this->comment->getId()]);
+        if (is_null($commentSignaled)) {
+            return true;
+        }
+
+        return !$commentSignaled->isValided();
+    }
+
     public function isSignaled(): bool
     {
         $commentSignaled = $this->commentSignaledRepository->findOneBy(['comment' => $this->comment]);

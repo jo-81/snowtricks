@@ -47,11 +47,13 @@ final class CommentComponent
      *
      * @return array<mixed>
      */
-    public function getComments(): array
+    public function getComments()
     {
         return $this->commentRepository->findBy(
-            ['trick' => $this->trick],
-            ['createdAt' => 'DESC'],
+            [
+                'trick' => $this->trick,
+            ],
+            ['id' => 'DESC'],
             self::NUMBER_COMMENT * ($this->page + 1),
             0
         );

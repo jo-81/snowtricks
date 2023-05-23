@@ -25,13 +25,9 @@ class CommentSignaledCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield DateTimeField::new('createdAt', 'Signalé le')->hideOnForm();
-
         yield DateTimeField::new('editedAt', 'Modifié le')->onlyOnDetail();
-
         yield TextField::new('reason', 'Raison');
-
         yield AssociationField::new('comment', 'Commentaire');
-
         yield BooleanField::new('valided', 'Bloqué ?')->hideWhenCreating();
     }
 
