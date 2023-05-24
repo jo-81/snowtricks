@@ -15,27 +15,14 @@
     {% endif %}
 
     <div class="row g-5 mb-4">
-
         {% for key, comment in computed.comments %}
             {% if comment.commentSignaled is null %}
                 {% include "front/partials/_comment.html.twig" with {'comment': comment, 'key': key} %}
             {% endif %}
         {% endfor %}
-
     </div>
 
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        {# <form>
-            <div class="mb-3">
-                <label class="form-label">Votre commentaire</label>
-                <textarea rows="4" class="form-control" name="add_comment_content"></textarea>
-            </div>
-
-            <button type="button"
-                    data-action="live#action"
-                    data-action-name="addComment"
-                    class="btn btn-sm btn-primary scale">Poster</button>
-        </form> #}
         {{ form_start(form) }}
             {{ form_row(form.content) }}
             <button type="button"

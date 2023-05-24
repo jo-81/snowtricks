@@ -35,6 +35,27 @@
                     </ul>
                 </div>
             {% endif %}
+
+            {% if "ROLE_ADMIN" not in comment.author.roles %}
+                <div class="dropdown">
+                    <a class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-exclamation-diamond h5"></i>
+                    </a>
+
+                    <ul class="dropdown-menu border p-3" style="width: 250px">
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label">Raison</label>
+                                <input data-model="norender|reason" type="text" class="form-control"/>
+                            </div>
+                            <button type="button"
+                                    data-action="live#action"
+                                    data-action-name="signaledComment(id={{ comment.id }})"
+                                    class="btn btn-sm scale btn-warning">Signaler</button>
+                        </form>
+                    </ul>
+                </div>
+            {% endif %}
         </footer>
     {% endif %}
 </div>
