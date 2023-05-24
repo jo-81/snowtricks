@@ -4,78 +4,49 @@ namespace App\Twig\Components;
 
 use App\Entity\Comment;
 use App\Entity\Trick;
-use App\Entity\User;
-use App\Form\Comment\CommentType;
 use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
+use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
-use Symfony\UX\LiveComponent\ComponentWithFormTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 #[AsLiveComponent('comment')]
 final class CommentComponent extends AbstractController
 {
     use DefaultActionTrait;
-    use ComponentWithFormTrait;
-
-    public const NUMBER_COMMENT = 3;
 
     #[LiveProp]
-    public ?Trick $trick = null;
+    public Trick $trick;
 
-    #[LiveProp(writable: true)]
-    public int $page = 0;
-
-    public bool $isPersist = false;
+    /** @var array<mixed> */
+    #[LiveProp]
+    public array $changes = [];
 
     public function __construct(private CommentRepository $commentRepository)
     {
     }
 
-    public function mount(Trick $trick): void
-    {
-        $this->trick = $trick;
-    }
-
-    protected function instantiateForm(): FormInterface
-    {
-        return $this->createForm(CommentType::class, new Comment());
-    }
-
     #[LiveAction]
-    public function addComment(): Response
+    public function removeComment(#[LiveArg] int $index): void
     {
-        $this->submitForm();
-        /** @var Comment $comment */
-        $comment = $this->getFormInstance()->getData();
+        $comments = $this->getComments();
 
-        /** @var User $user */
-        $user = $this->getUser();
+        /** @var Comment */
+        $commentRemove = $comments[$index];
 
-        $comment
-            ->setTrick($this->trick)
-            ->setAuthor($user)
-        ;
+        if (!$this->isGranted('COMMENT_DELETE', $commentRemove)) {
+            $this->changes['label'] = 'danger';
+            $this->changes['message'] = 'Vous ne pouvez pas supprimer ce commentaire';
 
-        $this->commentRepository->save($comment, true);
-        $this->addFlash('success', 'Votre commentaire a bien été ajouté');
+            return;
+        }
 
-        return $this->redirectToRoute('trick.show', ['slug' => $this->trick->getSlug()]); /* @phpstan-ignore-line */
-    }
+        $this->changes['label'] = 'success';
+        $this->changes['message'] = 'Votre commentaire a bien été supprimé';
 
-    #[LiveAction]
-    public function increment(): void
-    {
-        ++$this->page;
-    }
-
-    public function getCount(): int
-    {
-        return $this->commentRepository->count(['trick' => $this->trick]);
+        $this->commentRepository->remove($commentRemove, true);
     }
 
     /**
@@ -83,20 +54,8 @@ final class CommentComponent extends AbstractController
      *
      * @return array<mixed>
      */
-    public function getComments()
+    public function getComments(): array
     {
-        return $this->commentRepository->findBy(
-            [
-                'trick' => $this->trick,
-            ],
-            ['id' => 'DESC'],
-            self::NUMBER_COMMENT * ($this->page + 1),
-            0
-        );
-    }
-
-    public function showButton(): bool
-    {
-        return self::NUMBER_COMMENT * ($this->page + 1) < $this->getCount();
+        return $this->commentRepository->findBy(['trick' => $this->trick]);
     }
 }

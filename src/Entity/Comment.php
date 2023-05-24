@@ -24,7 +24,7 @@ class Comment
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?User $author = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Trick $trick = null;
 
