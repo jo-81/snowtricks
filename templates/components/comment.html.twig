@@ -6,12 +6,12 @@
 
 
     {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-    <section class="bg-light p-3 mb-4 fw-bold">
-        <p>Pour ajouter un commentaire, vous devez être connecté</p>
-        <p class="mb-0">
-            <a class="btn btn-action scale" href="{{ path('app_login') }}">Connexion</a>
-        </p>
-    </section>
+        <section class="bg-light p-3 mb-4 fw-bold">
+            <p>Pour ajouter un commentaire, vous devez être connecté</p>
+            <p class="mb-0">
+                <a class="btn btn-action scale" href="{{ path('app_login') }}">Connexion</a>
+            </p>
+        </section>
     {% endif %}
 
     <div class="row g-5 mb-4">
@@ -23,6 +23,27 @@
         {% endfor %}
 
     </div>
+
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {# <form>
+            <div class="mb-3">
+                <label class="form-label">Votre commentaire</label>
+                <textarea rows="4" class="form-control" name="add_comment_content"></textarea>
+            </div>
+
+            <button type="button"
+                    data-action="live#action"
+                    data-action-name="addComment"
+                    class="btn btn-sm btn-primary scale">Poster</button>
+        </form> #}
+        {{ form_start(form) }}
+            {{ form_row(form.content) }}
+            <button type="button"
+                    data-action="live#action"
+                    data-action-name="addComment"
+                    class="btn btn-sm btn-primary scale">Poster</button>
+        {{ form_end(form) }}
+    {% endif %}
 
     {% if changes is not empty %}
         {{ component('toast', {
