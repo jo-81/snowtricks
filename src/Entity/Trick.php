@@ -268,4 +268,15 @@ class Trick implements EntitySlugInterface
 
         return $this;
     }
+    
+    /**
+     * getFeatured
+     *
+     * @return Image
+     */
+    public function getFeatured(): Image
+    {
+        $images = $this->getImages();
+        return $images[0];
+    }
 }

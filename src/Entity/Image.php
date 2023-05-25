@@ -32,7 +32,7 @@ class Image extends Media
     private ?File $imageFile = null;
 
     #[Assert\Image(
-        maxWidth: 650,
+        maxWidth: 1440,
     )]
     #[Assert\File(
         extensions: ['png', 'jpg', 'jpeg'],

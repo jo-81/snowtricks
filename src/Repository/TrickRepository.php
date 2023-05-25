@@ -72,6 +72,8 @@ class TrickRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('t')
             ->andWhere('t.category = :cat')
             ->andWhere('t.id != :exclude')
+            // ->andWhere('t.published = true')
+            // ->andWhere('t.valided = true')
             ->select('t.id, t.title, t.slug')
             ->setParameter('cat', $category)
             ->setParameter('exclude', $exclude)

@@ -36,12 +36,17 @@ final class TrickListComponent
      */
     public function getTricks(): array
     {
-        return $this->trickRepository->findBy([], ['createdAt' => 'DESC'], self::NUMBER_TRICK * ($this->page + 1), 0);
+        return $this->trickRepository->findBy(
+            ['published' => true, 'valided' => true], 
+            ['createdAt' => 'DESC'], 
+            self::NUMBER_TRICK * ($this->page + 1), 
+            0
+        );
     }
 
     public function showButton(): bool
     {
-        $count = $this->trickRepository->count([]);
+        $count = $this->trickRepository->count(['published' => true, 'valided' => true]);
 
         return self::NUMBER_TRICK * ($this->page + 1) < $count;
     }
