@@ -86,9 +86,13 @@ final class TrickListAndSearchComponent
     private function getCriteria(): array
     {
         if ('all' == $this->categoryName) {
-            return [];
+            return ['published' => true, 'valided' => true];
         }
 
-        return ['category' => $this->categoryRepository->findOneBy(['name' => $this->categoryName])];
+        return [
+            'published' => true, 
+            'valided' => true, 
+            'category' => $this->categoryRepository->findOneBy(['name' => $this->categoryName])
+        ];
     }
 }

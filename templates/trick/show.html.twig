@@ -5,8 +5,14 @@
 {% block body %}
     <section>
         <header class="mb-4">
-            <p>Publié le {{ trick.createdAt | date('d/m/Y') }} par {{ trick.author.username }}</p>
+            <p>Publié le {{ trick.createdAt | date('d/m/Y') }} 
+                {% if trick.author.username is not null %}
+                    par {{ trick.author.username }}
+                {% endif %}    
+            </p>
         </header>
+
+        {% include "front/partials/_carousel.html.twig" %}
 
         <div class="row g-4">
             <section class="{{
@@ -14,7 +20,7 @@
                     "col-lg-8": tricksSameCategory is not empty
                 })
             }}">
-                {{ trick.content }}
+                {{ trick.content | raw }}
 
                 {{ component('comment', {
                     'trick': trick,

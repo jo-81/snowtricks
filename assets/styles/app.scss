@@ -59,6 +59,8 @@ $toast-border-width: 0;
         height: 700px;
         background-attachment: fixed;
         background-position: bottom;
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 }
 
@@ -91,3 +93,21 @@ $toast-border-width: 0;
 }
 
 @import "~bootstrap/scss/bootstrap";
+@import "node_modules/@glidejs/glide/src/assets/sass/glide.core";
+
+.glide__bullet {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: transparent;
+    border-width: 0px;
+    background: #eee;
+}
+
+.glide__bullet.glide__bullet--active {
+    background-color: $primary;
+}
+
+iframe {
+    width: 100%;
+}

@@ -13,6 +13,8 @@ import * as Bootstrap from "bootstrap";
 // start the Stimulus application
 import './bootstrap';
 
+import Glide, { Controls, Breakpoints } from "@glidejs/glide/dist/glide.modular.esm";
+
 // Navigation
 let toggleClassScrollEvent = function() {
     let navigation = document.getElementById("navbar");
@@ -31,3 +33,17 @@ toggleClassScrollEvent();
 window.addEventListener("scroll", function (e) {
     toggleClassScrollEvent();
 });
+
+new Glide(".glide", {
+    type: "carousel",
+    perView: 2,
+    gap: 3,
+    breakpoints: {
+        800: {
+        perView: 2,
+        },
+        480: {
+        perView: 1,
+        },
+    },
+}).mount({ Controls, Breakpoints });
