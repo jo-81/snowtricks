@@ -1,9 +1,8 @@
 <div{{ attributes.defaults({ class: 'mt-5' }) }}>
 
     <header class="mb-4">
-        {# <h4 class="h5 fw-bold">{{ plurial(this.count, 'Commentaire', 'Commentaires') }} ({{ this.count }})</h4> #}
+        <h4 class="h5 fw-bold">{{ plurial(this.count, 'Commentaire', 'Commentaires') }} ({{ this.count }})</h4>
     </header>
-
 
     {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
         <section class="bg-light p-3 mb-4 fw-bold">
@@ -16,27 +15,42 @@
 
     <div class="row g-5 mb-4">
         {% for key, comment in computed.comments %}
-            {% if comment.commentSignaled is null %}
-                {% include "front/partials/_comment.html.twig" with {'comment': comment, 'key': key} %}
-            {% endif %}
+            {{ component('card_comment', {
+                'comment': comment,
+                'key': comment.id,
+            }) }}
         {% endfor %}
     </div>
 
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        {{ form_start(form) }}
-            {{ form_row(form.content) }}
-            <button type="button"
-                    data-action="live#action"
-                    data-action-name="addComment"
-                    class="btn btn-sm btn-primary scale">Poster</button>
-        {{ form_end(form) }}
+    {% if this.showButton %}
+    <button class="btn btn-outline-primary scale"
+            data-action-name="increment()"
+            data-action="live#action">Plus de commentaires
+            
+        <div    data-loading="action(increment)|show"
+                class="ms-3 spinner-border spinner-border-sm" 
+                role="status">
+            <span class="visually-hidden">Loading</span>
+        </div>
+        
+    </button>
     {% endif %}
 
-    {% if changes is not empty %}
-        {{ component('toast', {
-            'message': changes.message,
-            'type': changes.label,
-            'show': true,
-        }) }}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <div class="mt-4">
+            {{ form_start(form) }}
+                {{ form_row(form.content) }}
+                <button type="button"
+                        data-action="live#action"
+                        data-action-name="addComment"
+                        class="btn btn-sm btn-primary scale">Poster
+                            <div    data-loading="action(addComment)|show"
+                                    class="ms-3 spinner-border spinner-border-sm" 
+                                    role="status">
+                                <span class="visually-hidden">Loading</span>
+                            </div>
+                </button>
+            {{ form_end(form) }}
+        </div>
     {% endif %}
 </div>

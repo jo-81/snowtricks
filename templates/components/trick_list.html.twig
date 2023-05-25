@@ -3,7 +3,7 @@
     <div class="row g-5 mb-4" data-model="on(change)|tricks">
         {% for trick in this.tricks %}
             {{ component('card_trick', {
-                'trick': trick
+                'trick': trick,
             }) }}
         {% endfor %}
     </div>

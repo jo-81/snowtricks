@@ -17,12 +17,17 @@
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <footer class="d-flex justify-content-end align-items-center">
             {% if is_granted('COMMENT_ACCESS', comment) %}
-                <a title="modifier" class="link-info" href="#">
-                    <i class="bi bi-pencil-square h5"></i>
+                <a  class="link-info d-inline-block" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#collapseEditComment{{ comment.id }}"
+                        role="button" 
+                        aria-expanded="false" 
+                        aria-controls="collapseEditComment{{ comment.id }}">
+                            <i class="bi bi-pencil-square h5"></i>
                 </a>
 
                 <div class="dropdown">
-                    <a title="supprimer" class="dropdown-toggle mx-2 link-danger" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a title="supprimer" class="dropdown-toggle mx-2 link-danger" href="#" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-trash3 h5"></i>
                     </a>
 
@@ -57,5 +62,19 @@
                 </div>
             {% endif %}
         </footer>
+
+        <div class="collapse mt-3" id="collapseEditComment{{ comment.id }}">
+            <form>
+                <div class="mb-3">
+                    <textarea   rows="4" 
+                                data-model="content"
+                                class="form-control">{{ comment.content }}</textarea>
+                </div>
+                <button type="button"
+                        data-action="live#action"
+                        data-action-name="editComment(id={{ comment.id }})"
+                        class="btn btn-sm scale btn-info">Modifier</button>
+            </form>
+        </div>
     {% endif %}
 </div>
