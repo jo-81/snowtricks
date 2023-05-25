@@ -1,66 +1,92 @@
-<div{{ attributes.defaults({ class: 'col-12' }) }}>
-    <header class="py-2 border-bottom d-flex align-items-center">
-        <span>
-            {{ avatar(comment.author) }}
-        </span>
+<div{{ attributes }}>
+    <div data-live-id={{ comment.id }} class="col-12">
+        <header class="py-2 border-bottom d-flex align-items-center">
+            <span>
+                {{ avatar(comment.author) }}
+            </span>
 
-        <div class="ms-3">
-            <span class="fw-bold d-block">{{ comment.author.username }}</span>
-            <span class="small d-block">{{ comment.createdAt | date('d/m/Y h:i') }}</span>
-        </div>
-    </header>
+            <div class="ms-3">
+                <span class="fw-bold d-block">{{ comment.author.username }}</span>
+                <span class="small d-block">{{ comment.createdAt | date('d/m/Y h:i') }}</span>
+            </div>
+        </header>
 
-    <div class="mt-2">
-        {% if this.valided %}
+        <div class="mt-2">
             {{ comment.content }}
-        {% else %}
-            <p class="mb-0 text-danger fw-bold">Commentaire bloqué</p>
+        </div>
+
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+            {% if comment.commentSignaled is null %}
+                <footer class="d-flex justify-content-end align-items-center">
+                    {% if is_granted('COMMENT_ACCESS', comment) %}
+                        <a  class="link-info d-inline-block" 
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#collapseEditComment{{ comment.id }}"
+                                role="button" 
+                                aria-expanded="false" 
+                                aria-controls="collapseEditComment{{ comment.id }}">
+                                    <i class="bi bi-pencil-square h5"></i>
+                        </a>
+
+                        <div class="dropdown">
+                            <a title="supprimer" class="dropdown-toggle mx-2 link-danger" href="#" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-trash3 h5"></i>
+                            </a>
+
+                            <ul class="dropdown-menu border p-3" style="width: 250px">
+                                <p>Voulez-vous supprimer ce commentaire ?</p>
+                                <button class="btn btn-danger btn-sm scale"
+                                        data-action="live#action"
+                                        data-action-name="removeComment(id={{ comment.id }})">Supprimer
+                                        <div    data-loading="action(removeComment)|show"
+                                                class="ms-3 spinner-border spinner-border-sm" 
+                                                role="status">
+                                                <span class="visually-hidden">Loading</span>
+                                        </div>
+                                </button>
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                    {% if "ROLE_ADMIN" not in comment.author.roles and comment.author.id != app.user.id %}
+                        <div class="dropdown">
+                            <a class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-exclamation-diamond h5"></i>
+                            </a>
+
+                            <ul class="dropdown-menu border p-3" style="width: 250px">
+                                <form>
+                                    <div class="mb-3">
+                                        <label class="form-label">Raison</label>
+                                        <input data-model="norender|reason" type="text" class="form-control"/>
+                                    </div>
+                                    <button type="button"
+                                            data-action="live#action"
+                                            data-action-name="signaledComment(id={{ comment.id }})"
+                                            class="btn btn-sm scale btn-warning">Signaler</button>
+                                </form>
+                            </ul>
+                        </div>
+                    {% endif %}
+                </footer>
+            {% endif %}
+
+            <div class="collapse mt-3" id="collapseEditComment{{ comment.id }}">
+                {{ form_start(form) }}
+                    {{ form_row(form.content) }}
+                    <button type="button"
+                        data-action="live#action"
+                        data-action-name="editComment(id={{ comment.id }})"
+                        class="btn btn-sm scale btn-info">Modifier
+                        <div    data-loading="action(editComment)|show"
+                                class="ms-3 spinner-border spinner-border-sm" 
+                                role="status">
+                                <span class="visually-hidden">Loading</span>
+                        </div>
+                    </button>
+                {{ form_end(form) }}
+            </div>
         {% endif %}
     </div>
-
-        {% if is_granted('IS_AUTHENTICATED_FULLY') and this.isSignaled == false %}
-            <footer class="d-flex justify-content-end align-items-center">
-                {% if is_granted('COMMENT_ACCESS', comment) %}
-                    <a title="modifier" class="link-info" href="#">
-                        <i class="bi bi-pencil-square h5"></i>
-                    </a>
-
-                    <a title="supprimer" class="mx-2 link-danger" href="#">
-                        <i class="bi bi-trash3 h5"></i>
-                    </a>
-                {% endif %}
-
-                {% if "ROLE_ADMIN" not in comment.author.roles %}
-                    <div class="dropdown">
-                        <a class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-exclamation-diamond h5"></i>
-                        </a>
-                        <ul class="dropdown-menu border p-3" style="width: 250px">
-                        {{ form_start(form, {
-                            attr: {
-                                'data-action': 'live#action',
-                                'data-action-name': 'prevent|save'
-                            }
-                        }) }}
-
-                        {{ form_row(form.reason) }}
-
-                        <button class="btn btn-sm scale btn-primary">Signaler</button>
-
-                        {{ form_end(form) }}
-                        </ul>
-                    </div>
-
-                {% endif %}
-            </footer>
-        {% endif %}
-
-        {% if this.isPersist %}
-            {{ component('toast', {
-                'message': 'Le commentaire a bien été signalé',
-                'type': 'success',
-                'show': true,
-            }) }}
-        {% endif %}
-
 </div>
