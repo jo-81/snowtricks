@@ -35,6 +35,10 @@
     </header>
 
     <section class="row g-5 mb-4 overflow-hidden">
+        {% if this.tricks is empty %}
+            <p>Aucunes figures enregistrées.</p>
+        {% endif %}
+        
         {% for trick in this.tricks %}
             {{ component('card_trick', {
                 'trick': trick
