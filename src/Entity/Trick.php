@@ -276,7 +276,12 @@ class Trick implements EntitySlugInterface
      */
     public function getFeatured(): Image
     {
-        $images = $this->getImages();
-        return $images[0];
+        return $this->getImages()->first();
+    }
+
+    public function getGallery()
+    {
+        $this->getImages()->remove(0);
+        return array_merge($this->getImages()->toArray(), $this->getVideos()->toArray());
     }
 }
