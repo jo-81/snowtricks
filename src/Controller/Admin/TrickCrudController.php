@@ -110,6 +110,7 @@ class TrickCrudController extends AbstractCrudController
 
         yield FormField::addRow();
         yield BooleanField::new('published', 'Publié')
+            ->hideWhenCreating()
             ->setColumns('col-12 col-sm-6 col-md-4 col-lg-3')
         ;
         yield BooleanField::new('valided', 'Valider')

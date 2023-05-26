@@ -23,7 +23,6 @@ class CommentSignaled
     private ?string $reason = null;
 
     #[ORM\OneToOne(inversedBy: 'commentSignaled')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Comment $comment = null;
 
     #[ORM\Column]
