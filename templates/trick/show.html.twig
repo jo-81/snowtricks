@@ -12,14 +12,17 @@
             </p>
         </header>
 
-        {% include "front/partials/_carousel.html.twig" %}
-
         <div class="row g-4">
             <section class="{{
                 html_classes("col-12", {
                     "col-lg-8": tricksSameCategory is not empty
                 })
             }}">
+
+                {% if trick.gallery is not empty %}
+                    {% include "front/partials/_carousel.html.twig" %}
+                {% endif %}
+
                 {{ trick.content | raw }}
 
                 {{ component('comment', {
