@@ -6,7 +6,7 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class InstanceOfExtensionRuntime implements RuntimeExtensionInterface
 {
-    public function isInstanceOf($object, string $class)
+    public function isInstanceOf(Object $object, string $class): bool
     {
         return $object instanceof $class;
     }

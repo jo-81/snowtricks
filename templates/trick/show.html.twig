@@ -6,7 +6,7 @@
     <section>
         <header class="mb-4">
             <p>Publié le {{ trick.createdAt | date('d/m/Y') }} 
-                {% if trick.author.username is not null %}
+                {% if trick.author is not null %}
                     par {{ trick.author.username }}
                 {% endif %}    
             </p>

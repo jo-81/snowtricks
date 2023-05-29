@@ -37,9 +37,9 @@ final class TrickListComponent
     public function getTricks(): array
     {
         return $this->trickRepository->findBy(
-            ['published' => true, 'valided' => true], 
-            ['createdAt' => 'DESC'], 
-            self::NUMBER_TRICK * ($this->page + 1), 
+            ['published' => true, 'valided' => true],
+            ['createdAt' => 'DESC'],
+            self::NUMBER_TRICK * ($this->page + 1),
             0
         );
     }
