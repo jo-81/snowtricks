@@ -15,12 +15,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class CommentCrudController extends AbstractCrudController
 {
@@ -80,10 +77,6 @@ class CommentCrudController extends AbstractCrudController
             ->hideOnForm()
             ->setPermission('ROLE_ADMIN')
         ;
-
-        yield FormField::addPanel()->onlyOnDetail()->setPermission('ROLE_ADMIN');
-        yield BooleanField::new('commentSignaled.valided', 'Bloqué ?')->onlyOnDetail();
-        yield TextField::new('commentSignaled.reason', 'Raison')->onlyOnDetail();
     }
 
     public function configureCrud(Crud $crud): Crud

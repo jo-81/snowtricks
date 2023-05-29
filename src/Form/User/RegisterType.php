@@ -20,7 +20,6 @@ class RegisterType extends AbstractType
                 'help' => 'Ce champs doit contenir un minimum de 5 caractères sans espacement',
                 'attr' => [
                     'class' => 'scale',
-                    'placeholder' => 'john_1',
                 ],
             ])
             ->add('email', EmailType::class, [

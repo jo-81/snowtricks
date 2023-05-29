@@ -3,10 +3,8 @@
 namespace App\Twig\Components;
 
 use App\Entity\Comment;
-use App\Entity\CommentSignaled;
 use App\Form\Comment\CommentType;
 use App\Repository\CommentRepository;
-use App\Repository\CommentSignaledRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -30,7 +28,7 @@ final class CardCommentComponent extends AbstractController
     #[LiveProp(writable: true)]
     public ?string $reason = null;
 
-    public function __construct(private CommentRepository $commentRepository, private CommentSignaledRepository $commentSignaledRepository)
+    public function __construct(private CommentRepository $commentRepository)
     {
     }
 
@@ -60,30 +58,6 @@ final class CardCommentComponent extends AbstractController
         /** @var Comment $comment */
         $comment = $this->getFormInstance()->getData();
         $this->commentRepository->save($comment, true);
-        $this->emitUp('commentEvent');
-    }
-
-    #[LiveAction]
-    public function signaledComment(#[LiveArg] int $id): void
-    {
-        /** @var Comment $comment */
-        $comment = $this->commentRepository->find($id);
-        if (!$comment instanceof Comment) {
-            return;
-        }
-
-        $isExists = $this->commentSignaledRepository->findOneBy(['comment' => $comment]);
-        if ($isExists instanceof CommentSignaled) {
-            return;
-        }
-
-        $commentSignaled = new CommentSignaled();
-        $commentSignaled
-            ->setReason($this->reason) /* @phpstan-ignore-line */
-            ->setComment($comment)
-        ;
-
-        $this->commentSignaledRepository->save($commentSignaled, true);
         $this->emitUp('commentEvent');
     }
 }

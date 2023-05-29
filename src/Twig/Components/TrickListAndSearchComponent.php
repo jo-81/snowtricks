@@ -90,9 +90,9 @@ final class TrickListAndSearchComponent
         }
 
         return [
-            'published' => true, 
-            'valided' => true, 
-            'category' => $this->categoryRepository->findOneBy(['name' => $this->categoryName])
+            'published' => true,
+            'valided' => true,
+            'category' => $this->categoryRepository->findOneBy(['name' => $this->categoryName]),
         ];
     }
 }
