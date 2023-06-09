@@ -33,8 +33,3 @@ toggleClassScrollEvent();
 window.addEventListener("scroll", function (e) {
     toggleClassScrollEvent();
 });
-
-new Glide(".glide", {
-    type: "carousel",
-    gap: 3,
-}).mount({ Controls });
